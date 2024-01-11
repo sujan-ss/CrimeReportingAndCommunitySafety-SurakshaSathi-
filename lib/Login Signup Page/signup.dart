@@ -1,13 +1,32 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, avoid_print
+// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({Key? key});
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    File? _photoImage;
+    File? _passportImage;
+
+    Future<void> _getImage(bool isPassport) async {
+      final ImagePicker _picker = ImagePicker();
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+      if (image != null) {
+        final File file = File(image.path);
+        if (isPassport) {
+          _passportImage = file;
+        } else {
+          _photoImage = file;
+        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -76,10 +95,9 @@ class SignUpPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              Divider(), // Add a line between Country and Phone Number
+              Divider(),
               Container(
-                margin: EdgeInsets.symmetric(
-                    vertical: 10), // Adjust the vertical margin as needed
+                margin: EdgeInsets.symmetric(vertical: 10),
                 child: Row(
                   children: [
                     Expanded(
@@ -93,22 +111,20 @@ class SignUpPage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          // Replace this DropdownButton with your actual country dropdown logic
                           DropdownButton<String>(
                             items: [
                               DropdownMenuItem(
                                   value: '+977', child: Text('Nepal')),
-                              // Add more countries as needed
                             ],
                             onChanged: (value) {
                               // Handle country selection
                             },
-                            value: '+977', // Initial value, replace as needed
+                            value: '+977',
                           ),
                         ],
                       ),
                     ),
-                    VerticalDivider(), // Add vertical line
+                    VerticalDivider(),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +137,6 @@ class SignUpPage extends StatelessWidget {
                             ),
                           ),
                           TextFormField(
-                            // Add your logic for handling phone number input
                             decoration: InputDecoration(
                               hintText: 'Enter your phone number',
                             ),
@@ -140,7 +155,25 @@ class SignUpPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
+              SizedBox(height: 10),
+              GestureDetector(
+                onTap: () async {
+                  await _getImage(false);
+                },
+                child: _photoImage == null
+                    ? Container(
+                        width: 100,
+                        height: 100,
+                        color: Colors.grey,
+                        child: Icon(Icons.camera_alt, color: Colors.white),
+                      )
+                    : Image.file(
+                        _photoImage!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+              ),
               SizedBox(height: 20),
               Text(
                 'Passport',
@@ -148,6 +181,25 @@ class SignUpPage extends StatelessWidget {
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+              SizedBox(height: 10),
+              GestureDetector(
+                onTap: () async {
+                  await _getImage(true);
+                },
+                child: _passportImage == null
+                    ? Container(
+                        width: 100,
+                        height: 100,
+                        color: Colors.grey,
+                        child: Icon(Icons.camera_alt, color: Colors.white),
+                      )
+                    : Image.file(
+                        _passportImage!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
               ),
               SizedBox(height: 20),
               Text(
@@ -158,7 +210,6 @@ class SignUpPage extends StatelessWidget {
                 ),
               ),
               TextFormField(
-                // Add your logic for handling password input
                 obscureText: true,
                 onChanged: (value) {},
                 decoration: InputDecoration(
@@ -174,7 +225,6 @@ class SignUpPage extends StatelessWidget {
                 ),
               ),
               TextFormField(
-                // Add your logic for handling confirm password input
                 obscureText: true,
                 onChanged: (value) {},
                 decoration: InputDecoration(
@@ -189,14 +239,12 @@ class SignUpPage extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        10.0), // Adjust the border radius as needed
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  backgroundColor: Color(0xFF32508E), // Button background color
-                  foregroundColor: Colors.white, // Text color
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 30.0,
-                      vertical: 15.0), // Adjust padding as needed
+                  backgroundColor: Color(0xFF32508E),
+                  foregroundColor: Colors.white,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
                 ),
                 child: Text('SignUp'),
               ),

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_print
+// ignore_for_file: prefer_const_constructors, avoid_print, sort_child_properties_last
 
 import 'package:flutter/material.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login.dart';
@@ -13,13 +13,14 @@ class LoginSigninScreen extends StatelessWidget {
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           // Your logo image
+          SizedBox(height: 100.0),
           Image.asset(
             'assets/SignIn_LogInLogo.png', // Replace with the path to your logo image
             width: 200.0,
             height: 200.0,
             // Adjust width and height based on your logo size
           ),
-          SizedBox(height: 40.0),
+          SizedBox(height: 100.0),
           // Welcome text with increased font size
           Text(
             'Welcome to Suraksha Sathi',
@@ -28,7 +29,8 @@ class LoginSigninScreen extends StatelessWidget {
               fontWeight: FontWeight.normal,
             ),
           ),
-          SizedBox(height: 30.0),
+          SizedBox(height: 40.0), // Adjusted spacing
+
           // Create new account button with custom styling
           ElevatedButton(
             onPressed: () {
@@ -41,30 +43,58 @@ class LoginSigninScreen extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                    10.0), // Adjust the border radius as needed
+                borderRadius: BorderRadius.circular(10.0),
               ),
-              backgroundColor: Color(0xFF32508E), // Button background color
-              foregroundColor: Colors.white, // Text color
-              padding: EdgeInsets.symmetric(
-                  horizontal: 30.0, vertical: 15.0), // Adjust padding as needed
+              backgroundColor: Color(0xFF32508E),
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
             ),
             child: Text('Create New Account'),
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 15.0),
+
           // Already have an account button
           TextButton(
             onPressed: () {
               // Handle already have an account button press
               print('Already Have an Account pressed');
 
-              // Navigate to the Login page (replace 'Login' with your actual page name)
+              // Navigate to the Login page
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => LoginPage()),
               );
             },
+            style: TextButton.styleFrom(
+              textStyle: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
             child: Text('I Already Have an Account'),
+          ),
+          SizedBox(height: 40.0),
+
+          // Skip Button
+          TextButton(
+            onPressed: () {
+              // Handle Skip button press
+              print('Skip button pressed');
+
+              // Navigate to the Skip Landing Page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
+            },
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                  vertical: 20.0, horizontal: 40.0), // Adjusted padding
+              textStyle: TextStyle(
+                decoration: TextDecoration.underline,
+                fontSize: 18.0,
+              ),
+            ),
+            child: Text('Skip'),
           )
         ]),
       ),

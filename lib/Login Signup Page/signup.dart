@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
+import 'package:suraksha_saathi/Login%20Signup%20Page/signup_email_screen.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -236,6 +237,11 @@ class SignUpPage extends StatelessWidget {
                 onPressed: () {
                   // Handle create new account button press
                   print('SignUp pressed');
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SignUpEmailScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

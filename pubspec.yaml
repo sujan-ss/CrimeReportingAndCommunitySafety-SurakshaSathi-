@@ -87,6 +87,7 @@ flutter:
   assets:
     - assets/logo-no-background.png
     - assets/SignIn_LogInLogo.png
+    - assets/Sign up email Screen.png
 
   # ...
 

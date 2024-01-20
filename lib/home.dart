@@ -16,13 +16,34 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SquareButton(
-                label: 'Button 1', onPressed: () => print('Button 1 pressed')),
+              label: 'Button 1',
+              icon: Icons.star,
+              onPressed: () => print('Button 1 pressed'),
+            ),
             SizedBox(height: 20),
             SquareButton(
-                label: 'Button 2', onPressed: () => print('Button 2 pressed')),
+              label: 'Button 2',
+              icon: Icons.favorite,
+              onPressed: () => print('Button 2 pressed'),
+            ),
             SizedBox(height: 20),
             SquareButton(
-                label: 'Button 3', onPressed: () => print('Button 3 pressed')),
+              label: 'Button 3',
+              icon: Icons.thumb_up,
+              onPressed: () => print('Button 3 pressed'),
+            ),
+            SizedBox(height: 20),
+            SquareButton(
+              label: 'Button 4',
+              icon: Icons.thumb_down,
+              onPressed: () => print('Button 4 pressed'),
+            ),
+            SizedBox(height: 20),
+            SquareButton(
+              label: 'Button 5',
+              icon: Icons.add,
+              onPressed: () => print('Button 5 pressed'),
+            ),
           ],
         ),
       ),
@@ -32,9 +53,15 @@ class HomeScreen extends StatelessWidget {
 
 class SquareButton extends StatelessWidget {
   final String label;
+  final IconData icon;
   final VoidCallback onPressed;
 
-  const SquareButton({super.key, required this.label, required this.onPressed});
+  const SquareButton({
+    super.key,
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +73,16 @@ class SquareButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),
-      child: Text(
-        label,
-        style: TextStyle(fontSize: 18),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 30),
+          SizedBox(height: 10),
+          Text(
+            label,
+            style: TextStyle(fontSize: 18),
+          ),
+        ],
       ),
     );
   }

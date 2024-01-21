@@ -16,31 +16,31 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SquareButton(
-              label: 'Button 1',
+              label: 'Report Incident',
               icon: Icons.star,
               onPressed: () => print('Button 1 pressed'),
             ),
             SizedBox(height: 20),
             SquareButton(
-              label: 'Button 2',
+              label: 'Emergency Contacts',
               icon: Icons.favorite,
               onPressed: () => print('Button 2 pressed'),
             ),
             SizedBox(height: 20),
             SquareButton(
-              label: 'Button 3',
+              label: 'Safety Tips/Measures',
               icon: Icons.thumb_up,
               onPressed: () => print('Button 3 pressed'),
             ),
             SizedBox(height: 20),
             SquareButton(
-              label: 'Button 4',
+              label: 'e-Complaints',
               icon: Icons.thumb_down,
               onPressed: () => print('Button 4 pressed'),
             ),
             SizedBox(height: 20),
             SquareButton(
-              label: 'Button 5',
+              label: 'Attach Files',
               icon: Icons.add,
               onPressed: () => print('Button 5 pressed'),
             ),

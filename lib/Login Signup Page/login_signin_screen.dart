@@ -54,25 +54,34 @@ class LoginSigninScreen extends StatelessWidget {
           ),
           SizedBox(height: 15.0),
 
-          // Already have an account button
-          TextButton(
-            onPressed: () {
-              // Handle already have an account button press
-              print('Already Have an Account pressed');
-
-              // Navigate to the Login page
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
-            },
-            style: TextButton.styleFrom(
-              textStyle: TextStyle(
-                fontSize: 16.0,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Already have an account?",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
-            ),
-            child: Text('I Already Have an Account'),
+              TextButton(
+                onPressed: () {
+                  // Navigate to the Login screen
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+                child: Text(
+                  "Login",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
+
           SizedBox(height: 40.0),
 
           // Skip Button

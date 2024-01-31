@@ -21,7 +21,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.close),
+          icon: Icon(Icons.backspace_outlined,
+              size: 25.0, color: Color(0xFF32508E)),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -32,18 +33,19 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(20.0),
           child: Form(
             key: formField,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                SizedBox(height: 20),
                 Text(
                   'Login to Suraksha Saathi',
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
                 SizedBox(height: 50),
@@ -53,11 +55,12 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     labelText: "Email",
                     border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
+                    prefixIcon:
+                        Icon(Icons.email_outlined, color: Color(0xFF32508E)),
                   ),
                   validator: (value) {
                     bool emailValid = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~]+@[a-zA-Z0-9+\.[a-zA-Z]+")
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~]+@gmail\.com$")
                         .hasMatch(value!);
 
                     if (value.isEmpty) {
@@ -68,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 40),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: passController,
@@ -76,7 +79,8 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     labelText: "Password",
                     border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock),
+                    prefixIcon:
+                        Icon(Icons.lock_outlined, color: Color(0xFF32508E)),
                     suffixIcon: InkWell(
                       onTap: () {
                         setState(() {
@@ -84,7 +88,10 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       },
                       child: Icon(
-                        passToggle ? Icons.visibility : Icons.visibility_off,
+                        passToggle
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                        color: Color(0xFF32508E),
                       ),
                     ),
                   ),
@@ -97,14 +104,24 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
-                TextButton(
-                  onPressed: () {
-                    // Add your logic for "Forgot Password" functionality
-                  },
-                  child: Text('Forgot Password?'),
+                SizedBox(height: 5),
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      // Handle Forgot Password button press
+                      print('Forgot Password button pressed');
+                      // Add your logic for "Forgot Password" functionality
+                    },
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(
+                        fontSize: 15.5,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 40),
                 InkWell(
                   onTap: () {
                     if (formField.currentState!.validate()) {
@@ -114,17 +131,19 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   child: Container(
-                    height: 50,
+                    height: 55,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 15.0),
                     decoration: BoxDecoration(
-                      color: Colors.indigo,
+                      color: Color(0xFF32508E),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Center(
                       child: Text(
                         "Log In",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

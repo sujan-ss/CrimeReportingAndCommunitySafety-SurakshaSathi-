@@ -155,19 +155,11 @@ class _SignUpPage extends State<SignUpPage> {
                 SizedBox(height: 10),
                 GestureDetector(
                   onTap: () async {
-                    if (_photoImage == null) {
-                      // Show an error message or perform any other action
-                      print('Photo image not selected!');
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Please upload a photo.'),
-                        ),
-                      );
-                    } else {
-                      // Photo image is selected
-                      // You can continue with the rest of your logic
-                      print('Photo image selected');
-                    }
+                    await _getImage(false); // Set isPassport to false for photo
+                    setState(() {
+                      buttonText1 = 'Photo';
+                      // Set the height when text is visible
+                    });
                   },
                   child: _photoImage == null
                       ? Container(

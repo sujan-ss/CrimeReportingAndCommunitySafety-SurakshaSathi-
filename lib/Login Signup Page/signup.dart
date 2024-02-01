@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
+// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, prefer_interpolation_to_compose_strings
 
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -21,7 +21,8 @@ class _SignUpPage extends State<SignUpPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
-      TextEditingController(); // New controller for confirm password
+      TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
 
   File? _photoImage;
   File? _passportImage;
@@ -30,6 +31,7 @@ class _SignUpPage extends State<SignUpPage> {
   bool isChecked = false;
   String buttonText1 = 'Photo';
   String buttonText2 = 'Passport';
+  bool _autoValidate = false;
 
   Future<void> _getImage(bool isPassport) async {
     final ImagePicker _picker = ImagePicker();
@@ -65,8 +67,9 @@ class _SignUpPage extends State<SignUpPage> {
           padding: const EdgeInsets.all(20.0),
           child: Form(
             key: _formKey,
-            autovalidateMode:
-                AutovalidateMode.always, // Set autovalidateMode to always
+            autovalidateMode: _autoValidate
+                ? AutovalidateMode.always
+                : AutovalidateMode.disabled,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -140,9 +143,19 @@ class _SignUpPage extends State<SignUpPage> {
                 ),
                 SizedBox(height: 25),
                 IntlPhoneField(
+                  keyboardType: TextInputType.phone,
+                  controller: phoneController,
                   decoration: InputDecoration(
-                      labelText: "Phone Number",
-                      border: OutlineInputBorder(borderSide: BorderSide())),
+                    labelText: "Phone Number",
+                    border: OutlineInputBorder(borderSide: BorderSide()),
+                  ),
+                  initialCountryCode: "NP",
+                  onChanged: (phone) {
+                    // Use the built-in validation provided by IntlPhoneField
+                  },
+                  onCountryChanged: (country) {
+                    // Handle country change if needed
+                  },
                 ),
                 SizedBox(height: 25),
                 Text(
@@ -393,6 +406,10 @@ class _SignUpPage extends State<SignUpPage> {
                 SizedBox(height: 25),
                 InkWell(
                   onTap: () {
+                    setState(() {
+                      _autoValidate = true;
+                    });
+
                     if (isChecked &&
                         (_formKey.currentState?.validate() ?? false)) {
                       // Check if both photo and passport images are uploaded
@@ -403,6 +420,14 @@ class _SignUpPage extends State<SignUpPage> {
                           SnackBar(
                             content: Text(
                                 'Please upload both a photo and a passport.'),
+                          ),
+                        );
+                      } else if (phoneController.text.isEmpty) {
+                        // Show an error message if phone number is missing
+                        print('Please enter a phone number.');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please enter a phone number.'),
                           ),
                         );
                       } else {
@@ -424,11 +449,13 @@ class _SignUpPage extends State<SignUpPage> {
                     if (_formKey.currentState != null &&
                         _formKey.currentState!.validate()) {
                       print("Success");
+                      // Clear the text fields only on success
                       emailController.clear();
                       fNameController.clear();
                       lNameController.clear();
                       passwordController.clear();
                       confirmPasswordController.clear();
+                      phoneController.clear();
                     }
                   },
                   child: Container(

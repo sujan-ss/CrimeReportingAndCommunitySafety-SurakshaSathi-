@@ -21,8 +21,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.backspace_outlined,
-              size: 25.0, color: Color(0xFF32508E)),
+          icon: Icon(Icons.arrow_back_outlined,
+              size: 29.0, color: Color(0xFF32508E)),
           onPressed: () {
             Navigator.pushReplacement(
               context,

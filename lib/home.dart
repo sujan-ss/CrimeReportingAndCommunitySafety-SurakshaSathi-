@@ -1,89 +1,98 @@
-// ignore_for_file: prefer_const_constructors, avoid_print
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Square Buttons Home'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SquareButton(
-              label: 'Report Incident',
-              icon: Icons.star,
-              onPressed: () => print('Button 1 pressed'),
-            ),
-            SizedBox(height: 20),
-            SquareButton(
-              label: 'Emergency Contacts',
-              icon: Icons.favorite,
-              onPressed: () => print('Button 2 pressed'),
-            ),
-            SizedBox(height: 20),
-            SquareButton(
-              label: 'Safety Tips/Measures',
-              icon: Icons.thumb_up,
-              onPressed: () => print('Button 3 pressed'),
-            ),
-            SizedBox(height: 20),
-            SquareButton(
-              label: 'e-Complaints',
-              icon: Icons.thumb_down,
-              onPressed: () => print('Button 4 pressed'),
-            ),
-            SizedBox(height: 20),
-            SquareButton(
-              label: 'Attach Files',
-              icon: Icons.add,
-              onPressed: () => print('Button 5 pressed'),
-            ),
-          ],
+        title: Text('Suraksha Sathi'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_outlined,
+              size: 29.0, color: Color(0xFF32508E)),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => LoginSigninScreen()),
+            );
+          },
         ),
       ),
+      body: _buildBody(), // Add the body content for each tab
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBody() {
+    // Implement the body content for each tab
+    switch (_currentIndex) {
+      case 0:
+        return HomeTab();
+      case 1:
+        return ProfileTab();
+      case 2:
+        return SettingsTab();
+      default:
+        return Container();
+    }
+  }
+}
+
+class HomeTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Home Tab Content'),
     );
   }
 }
 
-class SquareButton extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  const SquareButton({
-    super.key,
-    required this.label,
-    required this.icon,
-    required this.onPressed,
-  });
-
+class ProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.all(20),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 30),
-          SizedBox(height: 10),
-          Text(
-            label,
-            style: TextStyle(fontSize: 18),
-          ),
-        ],
-      ),
+    return Center(
+      child: Text('Profile Tab Content'),
+    );
+  }
+}
+
+class SettingsTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Settings Tab Content'),
     );
   }
 }

@@ -52,8 +52,8 @@ class _SignUpPage extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.backspace_outlined,
-              size: 25.0, color: Color(0xFF32508E)),
+          icon: Icon(Icons.arrow_back_outlined,
+              size: 29.0, color: Color(0xFF32508E)),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -180,8 +180,8 @@ class _SignUpPage extends State<SignUpPage> {
                           height: 60,
                           decoration: BoxDecoration(
                             border: Border.all(),
-                            borderRadius:
-                                BorderRadius.circular(5.0), // Border radius
+                            borderRadius: BorderRadius.circular(5.0),
+                            // Border radius
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -205,7 +205,7 @@ class _SignUpPage extends State<SignUpPage> {
                             borderRadius:
                                 BorderRadius.circular(5.0), // Border radius
                             border: Border.all(
-                              color: Color(0xFF171616), // Border color
+                              color: Color(0xFF423939), // Border color
                               width: 1.0, // Border width
                             ),
                           ),

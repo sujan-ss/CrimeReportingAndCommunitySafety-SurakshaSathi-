@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/signup.dart';
 import 'package:suraksha_saathi/Skip%20Page/skip_home.dart';
+import 'package:suraksha_saathi/home.dart';
 
 class LoginSigninScreen extends StatelessWidget {
   const LoginSigninScreen({Key? key});
@@ -94,7 +95,7 @@ class LoginSigninScreen extends StatelessWidget {
                 // Navigate to the Login screen
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => SkipHomeScreen()),
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               },
               child: Text(

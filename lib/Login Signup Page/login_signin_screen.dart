@@ -70,7 +70,7 @@ class LoginSigninScreen extends StatelessWidget {
                     // Navigate to the Login screen
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(builder: (context) => loginPage()),
                     );
                   },
                   child: Text(

@@ -1,20 +1,62 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, override_on_non_overriding_member
+// ignore_for_file: prefer_typing_uninitialized_variables, camel_case_types, annotate_overrides, library_private_types_in_public_api, unused_local_variable, unused_label, dead_code, non_constant_identifier_names, use_build_context_synchronously, prefer_const_constructors, avoid_print
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:suraksha_saathi/Dashboard/test.dart';
+import 'package:suraksha_saathi/Login%20Signup%20Page/config.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class loginPage extends StatefulWidget {
+  const loginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  _loginState createState() => _loginState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _loginState extends State<loginPage> {
   final formField = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passController = TextEditingController();
   bool passToggle = true;
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedPref();
+  }
+
+  void initSharedPref() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  void loginUser() async {
+    if (emailController.text.isNotEmpty && passController.text.isNotEmpty) {
+      var reqBody = {
+        "email": emailController.text,
+        "password": passController.text
+      };
+
+      var response = await http.post(
+        Uri.parse(login),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody),
+      );
+
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['status']) {
+        var myToken = jsonResponse['token'];
+        prefs.setString('token', myToken);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => test(token: myToken)));
+      } else {
+        print("Something went wrong");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +166,8 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 40),
                 InkWell(
                   onTap: () {
+                    loginUser();
+
                     if (formField.currentState!.validate()) {
                       print("Success");
                       emailController.clear();

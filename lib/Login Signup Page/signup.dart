@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, prefer_interpolation_to_compose_strings
+// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, prefer_interpolation_to_compose_strings, use_build_context_synchronously
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -55,30 +55,29 @@ class _SignUpPage extends State<SignUpPage> {
         passwordController.text.isNotEmpty &&
         confirmPasswordController.text.isNotEmpty &&
         phoneController.text.isNotEmpty) {
-      var regBody = {
-        "firstName": fNameController.text,
-        "lastName": lNameController.text,
+      var reqBody = {
+        "firstname": fNameController.text,
+        "lastname": lNameController.text,
         "email": emailController.text,
         "password": passwordController.text,
-        "confirmPassword": confirmPasswordController.text,
-        "phone": phoneController.text
+        "confirmpassword": confirmPasswordController.text,
+        "number": phoneController.text
       };
 
-      try {
-        var response = await http.post(
-          Uri.parse(registration),
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode(regBody),
-        );
+      var response = await http.post(
+        Uri.parse(registration),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody),
+      );
 
-        if (response.statusCode == 200) {
-          print("User registered successfully");
-        } else {
-          print("Failed to register user: ${response.statusCode}");
-        }
-      } catch (e) {
-        print("Error registering user: $e");
-        // Handle error (e.g., connection reset)
+      var jsonResponse = jsonDecode(response.body);
+      print(jsonResponse['status']);
+
+      if (jsonResponse['status']) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => SignUpEmailScreen()));
+      } else {
+        print("Something went wrong");
       }
     } else {
       setState(() {
@@ -463,12 +462,12 @@ class _SignUpPage extends State<SignUpPage> {
                       } else {
                         // Proceed with signup logic
                         print('SignUp pressed');
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUpEmailScreen(),
-                          ),
-                        );
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => SignUpEmailScreen(),
+                        //   ),
+                        // );
                       }
                     } else {
                       // Handle the case when the checkbox is not checked or form validation fails

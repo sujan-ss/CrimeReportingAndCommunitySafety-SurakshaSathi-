@@ -77,7 +77,7 @@ class _SignUpPage extends State<SignUpPage> {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => SignUpEmailScreen()));
       } else {
-        print("Something went wrong");
+        print("Something went wrong!");
       }
     } else {
       setState(() {

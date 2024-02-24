@@ -1,36 +1,58 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+
+import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
+import 'package:suraksha_saathi/Skip%20Page/skip_emergency_contacts.dart';
 
 class SkipHomeScreen extends StatelessWidget {
   const SkipHomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Button Grid'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_outlined,
+              size: 29.0, color: Color(0xFF32508E)),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => LoginSigninScreen()),
+            );
+          },
         ),
-        body: Center(
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: GridView.count(
             crossAxisCount: 2,
+            childAspectRatio: 1, // Adjust aspect ratio as needed
+            mainAxisSpacing: 20.0, // Vertical spacing between buttons
+            crossAxisSpacing: 20.0, // Horizontal spacing between buttons
+
             children: [
               CustomButton(
-                icon: Icons.phone,
-                buttonText: 'Emergency Number',
+                icon: Icons.local_hospital_rounded,
+                buttonText: 'Emergency Contacts',
                 onPressed: () {
-                  // Add your onPressed functionality here
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SkipEmergencyContacts()),
+                  );
                 },
               ),
               CustomButton(
-                icon: Icons.home,
+                icon: Icons.home_rounded,
                 buttonText: 'Police Station',
                 onPressed: () {
                   // Add your onPressed functionality here
                 },
               ),
               CustomButton(
-                icon: Icons.shield,
+                icon: Icons.shield_rounded,
                 buttonText: 'Safety Tips/Measures',
                 onPressed: () {
                   // Add your onPressed functionality here
@@ -85,7 +107,8 @@ class CustomButton extends StatelessWidget {
                 buttonText,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],

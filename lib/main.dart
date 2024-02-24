@@ -46,9 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
         MaterialPageRoute(builder: (context) {
           if (widget.token != null &&
               JwtDecoder.isExpired(widget.token) == false) {
-            return test(
-                token: widget
-                    .token); // Assuming 'Test' is the correct name of your test screen class.
+            return test(token: widget.token);
           } else {
             return LoginSigninScreen();
           }

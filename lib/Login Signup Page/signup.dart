@@ -1,11 +1,12 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, prefer_interpolation_to_compose_strings
 
-import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:suraksha_saathi/Login%20Signup%20Page/config.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/signup_email_screen.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -24,26 +25,65 @@ class _SignUpPage extends State<SignUpPage> {
       TextEditingController();
   final TextEditingController phoneController = TextEditingController();
 
-  File? _photoImage;
-  File? _passportImage;
+  // File? _photoImage;
+  // File? _passportImage;
   bool passToggle = true;
   bool confpassToggle = true;
   bool isChecked = false;
-  String buttonText1 = 'Photo';
-  String buttonText2 = 'Passport';
+  // String buttonText1 = 'Photo';
+  // String buttonText2 = 'Passport';
   bool _autoValidate = false;
 
-  Future<void> _getImage(bool isPassport) async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  // Future<void> _getImage(bool isPassport) async {
+  //   final ImagePicker _picker = ImagePicker();
+  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
-    if (image != null) {
-      final File file = File(image.path);
-      if (isPassport) {
-        _passportImage = file;
-      } else {
-        _photoImage = file;
+  //   if (image != null) {
+  //     final File file = File(image.path);
+  //     if (isPassport) {
+  //       _passportImage = file;
+  //     } else {
+  //       _photoImage = file;
+  //     }
+  //   }
+  // }
+
+  Future<void> registerUser() async {
+    if (fNameController.text.isNotEmpty &&
+        lNameController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty &&
+        confirmPasswordController.text.isNotEmpty &&
+        phoneController.text.isNotEmpty) {
+      var regBody = {
+        "firstName": fNameController.text,
+        "lastName": lNameController.text,
+        "email": emailController.text,
+        "password": passwordController.text,
+        "confirmPassword": confirmPasswordController.text,
+        "phone": phoneController.text
+      };
+
+      try {
+        var response = await http.post(
+          Uri.parse(registration),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(regBody),
+        );
+
+        if (response.statusCode == 200) {
+          print("User registered successfully");
+        } else {
+          print("Failed to register user: ${response.statusCode}");
+        }
+      } catch (e) {
+        print("Error registering user: $e");
+        // Handle error (e.g., connection reset)
       }
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
     }
   }
 
@@ -157,132 +197,132 @@ class _SignUpPage extends State<SignUpPage> {
                     // Handle country change if needed
                   },
                 ),
-                SizedBox(height: 25),
-                Text(
-                  'Upload Photo',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () async {
-                    await _getImage(false); // Set isPassport to false for photo
-                    setState(() {
-                      buttonText1 = 'Photo';
-                      // Set the height when text is visible
-                    });
-                  },
-                  child: _photoImage == null
-                      ? Container(
-                          width: 150,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(5.0),
-                            // Border radius
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.upload_sharp,
-                                  color: Color(0xFF32508E)),
-                              SizedBox(width: 5),
-                              Text(
-                                buttonText1,
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 137, 129, 129),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Container(
-                          width: 150,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(5.0), // Border radius
-                            border: Border.all(
-                              color: Color(0xFF423939), // Border color
-                              width: 1.0, // Border width
-                            ),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
-                            child: Image.file(
-                              _photoImage!,
-                              width: 150,
-                              height: 60,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Passport',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                SizedBox(height: 15),
-                GestureDetector(
-                  onTap: () async {
-                    await _getImage(
-                        true); // Set isPassport to true for passport
-                    setState(() {
-                      buttonText2 = 'passport';
-                    });
-                  },
-                  child: _passportImage == null
-                      ? Container(
-                          width: 150,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius:
-                                BorderRadius.circular(5.0), // Border radius
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.upload_sharp,
-                                  color: Color(0xFF32508E)),
-                              SizedBox(width: 5),
-                              Text(
-                                buttonText2,
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 137, 129, 129),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Container(
-                          width: 150,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(5.0), // Border radius
-                            border: Border.all(
-                              color: Color(0xFF171616), // Border color
-                              width: 1.0, // Border width
-                            ),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
-                            child: Image.file(
-                              _passportImage!,
-                              width: 150,
-                              height: 60,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                ),
+                // SizedBox(height: 25),
+                // Text(
+                //   'Upload Photo',
+                //   style: TextStyle(
+                //     fontSize: 16,
+                //     fontWeight: FontWeight.normal,
+                //   ),
+                // ),
+                // SizedBox(height: 10),
+                // GestureDetector(
+                //   onTap: () async {
+                //     await _getImage(false); // Set isPassport to false for photo
+                //     setState(() {
+                //       buttonText1 = 'Photo';
+                //       // Set the height when text is visible
+                //     });
+                //   },
+                //   child: _photoImage == null
+                //       ? Container(
+                //           width: 150,
+                //           height: 60,
+                //           decoration: BoxDecoration(
+                //             border: Border.all(),
+                //             borderRadius: BorderRadius.circular(5.0),
+                //             // Border radius
+                //           ),
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               Icon(Icons.upload_sharp,
+                //                   color: Color(0xFF32508E)),
+                //               SizedBox(width: 5),
+                //               Text(
+                //                 buttonText1,
+                //                 style: TextStyle(
+                //                   color: Color.fromARGB(255, 137, 129, 129),
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         )
+                //       : Container(
+                //           width: 150,
+                //           height: 60,
+                //           decoration: BoxDecoration(
+                //             borderRadius:
+                //                 BorderRadius.circular(5.0), // Border radius
+                //             border: Border.all(
+                //               color: Color(0xFF423939), // Border color
+                //               width: 1.0, // Border width
+                //             ),
+                //           ),
+                //           child: ClipRRect(
+                //             borderRadius: BorderRadius.circular(5.0),
+                //             child: Image.file(
+                //               _photoImage!,
+                //               width: 150,
+                //               height: 60,
+                //               fit: BoxFit.cover,
+                //             ),
+                //           ),
+                //         ),
+                // ),
+                // SizedBox(height: 20),
+                // Text(
+                //   'Passport',
+                //   style: TextStyle(
+                //     fontSize: 16,
+                //     fontWeight: FontWeight.normal,
+                //   ),
+                // ),
+                // SizedBox(height: 15),
+                // GestureDetector(
+                //   onTap: () async {
+                //     await _getImage(
+                //         true); // Set isPassport to true for passport
+                //     setState(() {
+                //       buttonText2 = 'passport';
+                //     });
+                //   },
+                //   child: _passportImage == null
+                //       ? Container(
+                //           width: 150,
+                //           height: 60,
+                //           decoration: BoxDecoration(
+                //             border: Border.all(),
+                //             borderRadius:
+                //                 BorderRadius.circular(5.0), // Border radius
+                //           ),
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               Icon(Icons.upload_sharp,
+                //                   color: Color(0xFF32508E)),
+                //               SizedBox(width: 5),
+                //               Text(
+                //                 buttonText2,
+                //                 style: TextStyle(
+                //                   color: Color.fromARGB(255, 137, 129, 129),
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         )
+                //       : Container(
+                //           width: 150,
+                //           height: 60,
+                //           decoration: BoxDecoration(
+                //             borderRadius:
+                //                 BorderRadius.circular(5.0), // Border radius
+                //             border: Border.all(
+                //               color: Color(0xFF171616), // Border color
+                //               width: 1.0, // Border width
+                //             ),
+                //           ),
+                //           child: ClipRRect(
+                //             borderRadius: BorderRadius.circular(5.0),
+                //             child: Image.file(
+                //               _passportImage!,
+                //               width: 150,
+                //               height: 60,
+                //               fit: BoxFit.cover,
+                //             ),
+                //           ),
+                //         ),
+                // ),
                 SizedBox(height: 25),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
@@ -407,22 +447,12 @@ class _SignUpPage extends State<SignUpPage> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      _autoValidate = true;
+                      registerUser();
                     });
 
                     if (isChecked &&
                         (_formKey.currentState?.validate() ?? false)) {
-                      // Check if both photo and passport images are uploaded
-                      if (_photoImage == null || _passportImage == null) {
-                        // Show an error message if either photo or passport is missing
-                        print('Please upload both a photo and a passport.');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                'Please upload both a photo and a passport.'),
-                          ),
-                        );
-                      } else if (phoneController.text.isEmpty) {
+                      if (phoneController.text.isEmpty) {
                         // Show an error message if phone number is missing
                         print('Please enter a phone number.');
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -458,6 +488,60 @@ class _SignUpPage extends State<SignUpPage> {
                       phoneController.clear();
                     }
                   },
+
+                  // onTap: () {
+                  //   setState(() {
+                  //     registerUser();
+                  //   });
+
+                  //   if (isChecked &&
+                  //       (_formKey.currentState?.validate() ?? false)) {
+                  //     // Check if both photo and passport images are uploaded
+                  //     if (_photoImage == null || _passportImage == null) {
+                  //       // Show an error message if either photo or passport is missing
+                  //       print('Please upload both a photo and a passport.');
+                  //       ScaffoldMessenger.of(context).showSnackBar(
+                  //         SnackBar(
+                  //           content: Text(
+                  //               'Please upload both a photo and a passport.'),
+                  //         ),
+                  //       );
+                  //     } else if (phoneController.text.isEmpty) {
+                  //       // Show an error message if phone number is missing
+                  //       print('Please enter a phone number.');
+                  //       ScaffoldMessenger.of(context).showSnackBar(
+                  //         SnackBar(
+                  //           content: Text('Please enter a phone number.'),
+                  //         ),
+                  //       );
+                  //     } else {
+                  //       // Proceed with signup logic
+                  //       print('SignUp pressed');
+                  //       Navigator.pushReplacement(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => SignUpEmailScreen(),
+                  //         ),
+                  //       );
+                  //     }
+                  //   } else {
+                  //     // Handle the case when the checkbox is not checked or form validation fails
+                  //     print('Please agree to the terms and conditions');
+                  //   }
+
+                  //   // Assuming _formKey is a GlobalKey<FormState>
+                  //   if (_formKey.currentState != null &&
+                  //       _formKey.currentState!.validate()) {
+                  //     print("Success");
+                  //     // Clear the text fields only on success
+                  //     emailController.clear();
+                  //     fNameController.clear();
+                  //     lNameController.clear();
+                  //     passwordController.clear();
+                  //     confirmPasswordController.clear();
+                  //     phoneController.clear();
+                  //   }
+                  // },
                   child: Container(
                     height: 55,
                     padding:

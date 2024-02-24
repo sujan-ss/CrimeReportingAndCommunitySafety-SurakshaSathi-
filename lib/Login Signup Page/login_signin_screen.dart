@@ -3,8 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/signup.dart';
-import 'package:suraksha_saathi/Skip%20Page/skip_home.dart';
-import 'package:suraksha_saathi/home.dart';
+import 'package:suraksha_saathi/emergency_contacts.dart';
 
 class LoginSigninScreen extends StatelessWidget {
   const LoginSigninScreen({Key? key});
@@ -29,8 +28,8 @@ class LoginSigninScreen extends StatelessWidget {
             Text(
               'Welcome to Suraksha Sathi',
               style: TextStyle(
-                fontSize: 24.0, // Adjust the font size as needed
-                fontWeight: FontWeight.normal,
+                fontSize: 26.0, // Adjust the font size as needed
+                fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 40.0), // Adjusted spacing
@@ -95,7 +94,7 @@ class LoginSigninScreen extends StatelessWidget {
                 // Navigate to the Login screen
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => EmergencyContacts()),
                 );
               },
               child: Text(

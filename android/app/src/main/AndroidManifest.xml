@@ -3,6 +3,9 @@
         android:label="Suraksha Saathi"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+
+         <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyBQIcvv-Diitnw53cp4Nc6puN1Ve5IJJXg"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -19,6 +22,9 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+
+           
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

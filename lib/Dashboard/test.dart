@@ -5,7 +5,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
 
 class test extends StatefulWidget {
-  final String token; // Ensure token is explicitly typed as String
+  final String token;
   const test({required this.token, Key? key}) : super(key: key);
 
   @override
@@ -18,21 +18,24 @@ class _TestState extends State<test> {
   @override
   void initState() {
     super.initState();
-    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
-    email = jwtDecodedToken['email'];
+    if (widget.token.isNotEmpty && !JwtDecoder.isExpired(widget.token)) {
+      Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+      email = jwtDecodedToken['email'];
+    } else {
+      // If token is null, empty, or expired, navigate to login screen
+      _logout();
+    }
   }
 
-  // Function to handle logout action
   void _logout() async {
-    // Perform logout actions, such as clearing token from SharedPreferences
-    // For example:
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.remove('token');
+    // Perform logout actions
+    // For example: Clear token from SharedPreferences
 
-    // Navigate to the login screen
-    Navigator.pushReplacement(
+    // Navigate to the login screen and remove all previous routes
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginSigninScreen()),
+      (route) => false,
     );
   }
 

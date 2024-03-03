@@ -1,12 +1,13 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, sort_child_properties_last, use_key_in_widget_constructors
+// ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/signup.dart';
-import 'package:suraksha_saathi/Skip%20Page/skip_home.dart';
+import 'package:suraksha_saathi/attachfile.dart';
 
 class LoginSigninScreen extends StatelessWidget {
-  const LoginSigninScreen({Key? key});
+  const LoginSigninScreen({Key? key})
+      : super(key: key); // Initialize the constructor correctly
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +17,23 @@ class LoginSigninScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Your logo image
-            SizedBox(height: 100.0),
+            const SizedBox(height: 100.0),
             Image.asset(
               'assets/SignIn_LogInLogo.png', // Replace with the path to your logo image
               width: 200.0,
               height: 200.0,
               // Adjust width and height based on your logo size
             ),
-            SizedBox(height: 100.0),
+            const SizedBox(height: 100.0),
             // Welcome text with increased font size
-            Text(
+            const Text(
               'Welcome to Suraksha Sathi',
               style: TextStyle(
                 fontSize: 26.0, // Adjust the font size as needed
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 40.0), // Adjusted spacing
+            const SizedBox(height: 40.0), // Adjusted spacing
 
             // Create new account button with custom styling
             ElevatedButton(
@@ -41,25 +42,26 @@ class LoginSigninScreen extends StatelessWidget {
                 print('Create New Account pressed');
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()),
+                  MaterialPageRoute(builder: (context) => const SignUpPage()),
                 );
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
-                backgroundColor: Color(0xFF32508E),
+                backgroundColor: const Color(0xFF32508E),
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 80.0, vertical: 15.0),
               ),
-              child: Text('Create New Account'),
+              child: const Text('Create New Account'),
             ),
-            SizedBox(height: 15.0),
+            const SizedBox(height: 15.0),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Already have an account?",
                   style: TextStyle(
                     fontSize: 16,
@@ -70,10 +72,11 @@ class LoginSigninScreen extends StatelessWidget {
                     // Navigate to the Login screen
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => loginPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const loginPage()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     "Login",
                     style: TextStyle(
                       fontSize: 17,
@@ -84,7 +87,7 @@ class LoginSigninScreen extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 40.0),
+            const SizedBox(height: 40.0),
 
             // Skip Button
             TextButton(
@@ -94,10 +97,10 @@ class LoginSigninScreen extends StatelessWidget {
                 // Navigate to the Login screen
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => SkipHomeScreen()),
+                  MaterialPageRoute(builder: (context) => const AttachFiles()),
                 );
               },
-              child: Text(
+              child: const Text(
                 "Skip",
                 style: TextStyle(
                   fontSize: 18,

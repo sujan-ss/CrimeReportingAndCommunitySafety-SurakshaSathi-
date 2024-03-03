@@ -1,94 +1,162 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, use_key_in_widget_constructors
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AttachFiles extends StatefulWidget {
+  const AttachFiles({Key? key}) : super(key: key);
+
   @override
-  _AttachFiles createState() => _AttachFiles();
+  _AttachFilesState createState() => _AttachFilesState();
 }
 
-class _AttachFiles extends State<AttachFiles> {
+class _AttachFilesState extends State<AttachFiles> {
   String imageFilePath = '';
   String audioFilePath = '';
   String videoFilePath = '';
+  String description = ''; // Variable to hold the description
+
+  // List of locations
+  List<String> locations = ['Tripureshwor', 'Dillibazar'];
+  String? selectedLocation; // No initial selection
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // Handle back button press
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const LoginSigninScreen()),
+            );
           },
         ),
-        title: Text('Attach Media'),
+        title: const Text('Attach Media'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            buildAttachmentButton(
-              title: 'Image',
-              icon: Icons.image,
-              filePath: imageFilePath,
-              onPressed: () {
-                // Handle image attachment
-              },
-            ),
-            SizedBox(height: 20),
-            buildAttachmentButton(
-              title: 'Audio',
-              icon: Icons.audiotrack,
-              filePath: audioFilePath,
-              onPressed: () {
-                // Handle audio attachment
-              },
-            ),
-            SizedBox(height: 20),
-            buildAttachmentButton(
-              title: 'Video',
-              icon: Icons.videocam,
-              filePath: videoFilePath,
-              onPressed: () {
-                // Handle video attachment
-              },
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Select Location',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // 2x2 grid layout for attachment buttons
+              GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 20.0,
+                mainAxisSpacing: 20.0,
+                shrinkWrap: true,
+                children: [
+                  buildAttachmentButton(
+                    title: 'Image',
+                    icon: Icons.image,
+                    filePath: imageFilePath,
+                    onPressed: () async {
+                      final pickedFile = await ImagePicker()
+                          .pickImage(source: ImageSource.gallery);
+                      if (pickedFile != null) {
+                        setState(() {
+                          imageFilePath = pickedFile.path;
+                        });
+                      }
+                    },
+                  ),
+                  buildAttachmentButton(
+                    title: 'Audio',
+                    icon: Icons.audiotrack,
+                    filePath: audioFilePath,
+                    onPressed: () {
+                      // Handle audio attachment
+                    },
+                  ),
+                  buildAttachmentButton(
+                    title: 'Video',
+                    icon: Icons.videocam,
+                    filePath: videoFilePath,
+                    onPressed: () {
+                      // Handle video attachment
+                    },
+                  ),
+                ],
               ),
-            ),
-            // Add your location selection widget here
-            SizedBox(height: 20),
-            Text(
-              'Add Descriptions',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            // Add your description input field here
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Handle submit button press
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+              const SizedBox(height: 20),
+              // Heading for location selection
+              const Text(
+                'Select Location',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
-                backgroundColor: Color(0xFF32508E),
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
               ),
-              child: Text('Submit'),
-            ),
-          ],
+              const SizedBox(height: 10),
+              // Dropdown for selecting location
+              DropdownButtonFormField<String>(
+                value: selectedLocation,
+                items: [
+                  const DropdownMenuItem<String>(
+                    value: null,
+                    child: Text('Select a location'),
+                  ),
+                  ...locations.map((location) {
+                    return DropdownMenuItem<String>(
+                      value: location,
+                      child: Text(location),
+                    );
+                  }),
+                ],
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedLocation = newValue;
+                  });
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Descriptions',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 15),
+              // Description input field
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    description = value;
+                  });
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Add your description here',
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 3, // Allow multiple lines for description
+              ),
+              const SizedBox(height: 25),
+              ElevatedButton(
+                onPressed: () {
+                  // Handle submit button press
+                  // Access the description using the 'description' variable
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  backgroundColor: const Color(0xFF32508E),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0, vertical: 15.0),
+                ),
+                child: const Text('Submit'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -100,25 +168,43 @@ class _AttachFiles extends State<AttachFiles> {
     required String filePath,
     required VoidCallback onPressed,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '$title Attachment',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+    String buttonText = 'Attach $title';
+    return Material(
+      color: const Color(0xFF32508E),
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color(0xFF32508E),
+              width: 2,
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 40,
+                color: Colors.white,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                buttonText,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
-        SizedBox(height: 10),
-        ElevatedButton.icon(
-          onPressed: onPressed,
-          icon: Icon(icon),
-          label: Text('Attach $title'),
-        ),
-        SizedBox(height: 5),
-        Text(filePath),
-      ],
+      ),
     );
   }
 }

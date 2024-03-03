@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
 
@@ -7,7 +5,7 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -17,14 +15,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Suraksha Sathi'),
+        title: const Text('Suraksha Sathi'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined,
+          icon: const Icon(Icons.arrow_back_outlined,
               size: 29.0, color: Color(0xFF32508E)),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => LoginSigninScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const LoginSigninScreen()),
             );
           },
         ),
@@ -37,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _currentIndex = index;
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -59,11 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
     // Implement the body content for each tab
     switch (_currentIndex) {
       case 0:
-        return HomeTab();
+        return const HomeTab();
       case 1:
-        return ProfileTab();
+        return const ProfileTab();
       case 2:
-        return SettingsTab();
+        return const SettingsTab();
       default:
         return Container();
     }
@@ -71,27 +70,33 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Home Tab Content'),
     );
   }
 }
 
 class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Profile Tab Content'),
     );
   }
 }
 
 class SettingsTab extends StatelessWidget {
+  const SettingsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Settings Tab Content'),
     );
   }

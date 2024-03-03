@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_typing_uninitialized_variables, prefer_const_constructors
+// ignore_for_file: prefer_typing_uninitialized_variables, library_private_types_in_public_api
 
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
               JwtDecoder.isExpired(widget.token) == false) {
             return test(token: widget.token);
           } else {
-            return LoginSigninScreen();
+            return const LoginSigninScreen();
           }
         }),
       );

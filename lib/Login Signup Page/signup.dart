@@ -25,14 +25,14 @@ class _SignUpPage extends State<SignUpPage> {
       TextEditingController();
   final TextEditingController phoneController = TextEditingController();
 
-  // File? _photoImage;
-  // File? _passportImage;
   bool passToggle = true;
   bool confpassToggle = true;
   bool isChecked = false;
+  bool _autoValidate = false;
+  // File? _photoImage;
+  // File? _passportImage;
   // String buttonText1 = 'Photo';
   // String buttonText2 = 'Passport';
-  bool _autoValidate = false;
 
   // Future<void> _getImage(bool isPassport) async {
   //   final ImagePicker _picker = ImagePicker();
@@ -55,6 +55,15 @@ class _SignUpPage extends State<SignUpPage> {
         passwordController.text.isNotEmpty &&
         confirmPasswordController.text.isNotEmpty &&
         phoneController.text.isNotEmpty) {
+      if (passwordController.text != confirmPasswordController.text) {
+        // Passwords don't match, show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Passwords do not match.'),
+          ),
+        );
+        return;
+      }
       var reqBody = {
         "firstname": fNameController.text,
         "lastname": lNameController.text,
@@ -169,7 +178,7 @@ class _SignUpPage extends State<SignUpPage> {
                   ),
                   validator: (value) {
                     bool emailValid = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~]+@gmail\.com$")
+                            r"^[a-zA-Z0-9._%+-]+@(?:gmail|hotmail|yahoo|outlook)\.(?:com|net|org|edu|gov|co\.uk|ca|info|biz)$")
                         .hasMatch(value!);
 
                     if (value.isEmpty) {
@@ -346,6 +355,26 @@ class _SignUpPage extends State<SignUpPage> {
                       ),
                     ),
                   ),
+                  // validator: (value) {
+                  //   if (value!.isEmpty) {
+                  //     return 'Please enter a password';
+                  //   }
+                  //   if (value.length < 10) {
+                  //     return 'Password must be at least 10 characters long';
+                  //   }
+                  //   if (!value.contains(RegExp(r'[A-Z]'))) {
+                  //     return 'Password must contain at least one uppercase letter';
+                  //   }
+                  //   if (!value.contains(RegExp(r'[a-z]'))) {
+                  //     return 'Password must contain at least one lowercase letter';
+                  //   }
+                  //   if (!value.contains(RegExp(r'[0-9]'))) {
+                  //     return 'Password must contain at least one digit';
+                  //   }
+                  //   // Add more conditions as needed
+                  //   return null; // Return null if the validation passes
+                  // },
+
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Enter Password";
@@ -444,123 +473,117 @@ class _SignUpPage extends State<SignUpPage> {
                 ),
                 SizedBox(height: 25),
                 InkWell(
-                  onTap: () {
-                    setState(() {
-                      registerUser();
-                    });
-
-                    if (isChecked &&
-                        (_formKey.currentState?.validate() ?? false)) {
-                      if (phoneController.text.isEmpty) {
-                        // Show an error message if phone number is missing
-                        print('Please enter a phone number.');
+                    onTap: () {
+                      // Check if the checkbox is checked and form validation passes
+                      if (isChecked &&
+                          (_formKey.currentState?.validate() ?? false)) {
+                        // Proceed with signup logic
+                        setState(() {
+                          registerUser();
+                        });
+                      } else {
+                        // Handle the case when the checkbox is not checked or form validation fails
+                        print('Please agree to the terms and conditions');
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Please enter a phone number.'),
+                            content: Text(
+                                'Please agree to the terms and conditions.'),
                           ),
                         );
-                      } else {
-                        // Proceed with signup logic
-                        print('SignUp pressed');
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => SignUpEmailScreen(),
-                        //   ),
-                        // );
                       }
-                    } else {
-                      // Handle the case when the checkbox is not checked or form validation fails
-                      print('Please agree to the terms and conditions');
-                    }
-
-                    // Assuming _formKey is a GlobalKey<FormState>
-                    if (_formKey.currentState != null &&
-                        _formKey.currentState!.validate()) {
-                      print("Success");
-                      // Clear the text fields only on success
-                      emailController.clear();
-                      fNameController.clear();
-                      lNameController.clear();
-                      passwordController.clear();
-                      confirmPasswordController.clear();
-                      phoneController.clear();
-                    }
-                  },
-
-                  // onTap: () {
-                  //   setState(() {
-                  //     registerUser();
-                  //   });
-
-                  //   if (isChecked &&
-                  //       (_formKey.currentState?.validate() ?? false)) {
-                  //     // Check if both photo and passport images are uploaded
-                  //     if (_photoImage == null || _passportImage == null) {
-                  //       // Show an error message if either photo or passport is missing
-                  //       print('Please upload both a photo and a passport.');
-                  //       ScaffoldMessenger.of(context).showSnackBar(
-                  //         SnackBar(
-                  //           content: Text(
-                  //               'Please upload both a photo and a passport.'),
-                  //         ),
-                  //       );
-                  //     } else if (phoneController.text.isEmpty) {
-                  //       // Show an error message if phone number is missing
-                  //       print('Please enter a phone number.');
-                  //       ScaffoldMessenger.of(context).showSnackBar(
-                  //         SnackBar(
-                  //           content: Text('Please enter a phone number.'),
-                  //         ),
-                  //       );
-                  //     } else {
-                  //       // Proceed with signup logic
-                  //       print('SignUp pressed');
-                  //       Navigator.pushReplacement(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => SignUpEmailScreen(),
-                  //         ),
-                  //       );
-                  //     }
-                  //   } else {
-                  //     // Handle the case when the checkbox is not checked or form validation fails
-                  //     print('Please agree to the terms and conditions');
-                  //   }
-
-                  //   // Assuming _formKey is a GlobalKey<FormState>
-                  //   if (_formKey.currentState != null &&
-                  //       _formKey.currentState!.validate()) {
-                  //     print("Success");
-                  //     // Clear the text fields only on success
-                  //     emailController.clear();
-                  //     fNameController.clear();
-                  //     lNameController.clear();
-                  //     passwordController.clear();
-                  //     confirmPasswordController.clear();
-                  //     phoneController.clear();
-                  //   }
-                  // },
-                  child: Container(
-                    height: 55,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 15.0),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF32508E),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                    },
+                    child: Container(
+                      height: 55,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 15.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF32508E),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
+
+                      // onTap: () {
+                      //   setState(() {
+                      //     registerUser();
+                      //   });
+
+                      //   if (isChecked &&
+                      //       (_formKey.currentState?.validate() ?? false)) {
+                      //     // Check if both photo and passport images are uploaded
+                      //     if (_photoImage == null || _passportImage == null) {
+                      //       // Show an error message if either photo or passport is missing
+                      //       print('Please upload both a photo and a passport.');
+                      //       ScaffoldMessenger.of(context).showSnackBar(
+                      //         SnackBar(
+                      //           content: Text(
+                      //               'Please upload both a photo and a passport.'),
+                      //         ),
+                      //       );
+                      //     } else if (phoneController.text.isEmpty) {
+                      //       // Show an error message if phone number is missing
+                      //       print('Please enter a phone number.');
+                      //       ScaffoldMessenger.of(context).showSnackBar(
+                      //         SnackBar(
+                      //           content: Text('Please enter a phone number.'),
+                      //         ),
+                      //       );
+                      //     } else {
+                      //       // Proceed with signup logic
+                      //       print('SignUp pressed');
+                      //       Navigator.pushReplacement(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (context) => SignUpEmailScreen(),
+                      //         ),
+                      //       );
+                      //     }
+                      //   } else {
+                      //     // Handle the case when the checkbox is not checked or form validation fails
+                      //     print('Please agree to the terms and conditions');
+                      //   }
+
+                      //   // Assuming _formKey is a GlobalKey<FormState>
+                      //   if (_formKey.currentState != null &&
+                      //       _formKey.currentState!.validate()) {
+                      //     print("Success");
+                      //     // Clear the text fields only on success
+                      //     emailController.clear();
+                      //     fNameController.clear();
+                      //     lNameController.clear();
+                      //     passwordController.clear();
+                      //     confirmPasswordController.clear();
+                      //     phoneController.clear();
+                      //   }
+                      // },
+                      // child: Container(
+                      //   height: 55,
+                      //   padding:
+                      //       EdgeInsets.symmetric(horizontal: 20, vertical: 15.0),
+                      //   decoration: BoxDecoration(
+                      //     color: Color(0xFF32508E),
+                      //     borderRadius: BorderRadius.circular(5),
+                      //   ),
+                      //   child: Center(
+                      //     child: Text(
+                      //       "Sign Up",
+                      //       style: TextStyle(
+                      //         color: const Color.fromARGB(255, 255, 255, 255),
+                      //         fontSize: 16,
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                    )),
               ],
             ),
           ),

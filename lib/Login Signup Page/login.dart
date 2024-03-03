@@ -95,6 +95,13 @@ class _loginState extends State<loginPage> {
                   keyboardType: TextInputType.emailAddress,
                   controller: emailController,
                   decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF32508E),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     labelText: "Email",
                     border: OutlineInputBorder(),
                     prefixIcon:
@@ -119,6 +126,13 @@ class _loginState extends State<loginPage> {
                   controller: passController,
                   obscureText: passToggle,
                   decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF32508E),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     labelText: "Password",
                     border: OutlineInputBorder(),
                     prefixIcon:

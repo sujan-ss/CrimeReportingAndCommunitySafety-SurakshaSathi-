@@ -1,7 +1,9 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, prefer_interpolation_to_compose_strings, use_build_context_synchronously
 
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/config.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
@@ -29,6 +31,7 @@ class _SignUpPage extends State<SignUpPage> {
   bool confpassToggle = true;
   bool isChecked = false;
   bool _autoValidate = false;
+  bool ischeck = false;
   // File? _photoImage;
   // File? _passportImage;
   // String buttonText1 = 'Photo';
@@ -49,49 +52,59 @@ class _SignUpPage extends State<SignUpPage> {
   // }
 
   Future<void> registerUser() async {
-    if (fNameController.text.isNotEmpty &&
-        lNameController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty &&
-        confirmPasswordController.text.isNotEmpty &&
-        phoneController.text.isNotEmpty) {
-      if (passwordController.text != confirmPasswordController.text) {
-        // Passwords don't match, show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Passwords do not match.'),
-          ),
+    try {
+      if (fNameController.text.isNotEmpty &&
+          lNameController.text.isNotEmpty &&
+          emailController.text.isNotEmpty &&
+          passwordController.text.isNotEmpty &&
+          confirmPasswordController.text.isNotEmpty &&
+          phoneController.text.isNotEmpty) {
+        if (passwordController.text != confirmPasswordController.text) {
+          // Passwords don't match, show error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Passwords do not match.'),
+            ),
+          );
+          return;
+        }
+        var reqBody = {
+          "firstname": fNameController.text,
+          "lastname": lNameController.text,
+          "email": emailController.text,
+          "password": passwordController.text,
+          "confirmpassword": confirmPasswordController.text,
+          "number": phoneController.text
+        };
+
+        var response = await http.post(
+          Uri.parse(registration),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(reqBody),
         );
-        return;
-      }
-      var reqBody = {
-        "firstname": fNameController.text,
-        "lastname": lNameController.text,
-        "email": emailController.text,
-        "password": passwordController.text,
-        "confirmpassword": confirmPasswordController.text,
-        "number": phoneController.text
-      };
 
-      var response = await http.post(
-        Uri.parse(registration),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(reqBody),
-      );
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse['status']);
 
-      var jsonResponse = jsonDecode(response.body);
-      print(jsonResponse['status']);
-
-      if (jsonResponse['status']) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => SignUpEmailScreen()));
+        if (jsonResponse['status']) {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => SignUpEmailScreen()));
+        } else {
+          print("Something went wrong!");
+        }
       } else {
-        print("Something went wrong!");
+        setState(() {
+          _autoValidate = true;
+        });
       }
-    } else {
-      setState(() {
-        _autoValidate = true;
-      });
+    } catch (e) {
+      // Handle exceptions here
+      print('Exception occurred: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An error occurred. Please try again later.'),
+        ),
+      );
     }
   }
 
@@ -133,11 +146,19 @@ class _SignUpPage extends State<SignUpPage> {
                   keyboardType: TextInputType.text,
                   controller: fNameController,
                   decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF32508E),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     labelText: "First Name",
                     border: OutlineInputBorder(),
                     prefixIcon:
                         Icon(Icons.person_2_outlined, color: Color(0xFF32508E)),
                   ),
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Enter First Name";
@@ -152,11 +173,19 @@ class _SignUpPage extends State<SignUpPage> {
                   keyboardType: TextInputType.text,
                   controller: lNameController,
                   decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF32508E),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     labelText: "Last Name",
                     border: OutlineInputBorder(),
                     prefixIcon:
                         Icon(Icons.person_2_outlined, color: Color(0xFF32508E)),
                   ),
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Enter Last Name";
@@ -171,6 +200,13 @@ class _SignUpPage extends State<SignUpPage> {
                   keyboardType: TextInputType.emailAddress,
                   controller: emailController,
                   decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF32508E),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     labelText: "Email",
                     border: OutlineInputBorder(),
                     prefixIcon:
@@ -178,7 +214,7 @@ class _SignUpPage extends State<SignUpPage> {
                   ),
                   validator: (value) {
                     bool emailValid = RegExp(
-                            r"^[a-zA-Z0-9._%+-]+@(?:gmail|hotmail|yahoo|outlook)\.(?:com|net|org|edu|gov|co\.uk|ca|info|biz)$")
+                            r"^[a-zA-Z0-9._%+-]+@(?:gmail|hotmail|yahoo|outlook)\.(?:com)$")
                         .hasMatch(value!);
 
                     if (value.isEmpty) {
@@ -194,6 +230,13 @@ class _SignUpPage extends State<SignUpPage> {
                   keyboardType: TextInputType.phone,
                   controller: phoneController,
                   decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF32508E),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     labelText: "Phone Number",
                     border: OutlineInputBorder(borderSide: BorderSide()),
                   ),
@@ -203,6 +246,15 @@ class _SignUpPage extends State<SignUpPage> {
                   },
                   onCountryChanged: (country) {
                     // Handle country change if needed
+                  },
+                  validator: (phone) {
+                    if (phone == null || !phone.completeNumber.isNotEmpty) {
+                      return 'Please enter a valid phone number';
+                    } else if (phoneController.text
+                        .contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+                      return 'Phone number should not contain special symbols';
+                    }
+                    return null;
                   },
                 ),
                 // SizedBox(height: 25),
@@ -335,8 +387,15 @@ class _SignUpPage extends State<SignUpPage> {
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: passwordController,
-                  obscureText: passToggle,
+                  obscureText: confpassToggle,
                   decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF32508E),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     labelText: "Password",
                     border: OutlineInputBorder(),
                     prefixIcon:
@@ -344,46 +403,46 @@ class _SignUpPage extends State<SignUpPage> {
                     suffixIcon: InkWell(
                       onTap: () {
                         setState(() {
-                          passToggle = !passToggle;
+                          confpassToggle = !confpassToggle;
                         });
                       },
                       child: Icon(
-                        passToggle
+                        confpassToggle
                             ? Icons.visibility_outlined
                             : Icons.visibility_off_outlined,
                         color: Color(0xFF32508E),
                       ),
                     ),
                   ),
-                  // validator: (value) {
-                  //   if (value!.isEmpty) {
-                  //     return 'Please enter a password';
-                  //   }
-                  //   if (value.length < 10) {
-                  //     return 'Password must be at least 10 characters long';
-                  //   }
-                  //   if (!value.contains(RegExp(r'[A-Z]'))) {
-                  //     return 'Password must contain at least one uppercase letter';
-                  //   }
-                  //   if (!value.contains(RegExp(r'[a-z]'))) {
-                  //     return 'Password must contain at least one lowercase letter';
-                  //   }
-                  //   if (!value.contains(RegExp(r'[0-9]'))) {
-                  //     return 'Password must contain at least one digit';
-                  //   }
-                  //   // Add more conditions as needed
-                  //   return null; // Return null if the validation passes
-                  // },
+                  style: TextStyle(color: Colors.black), // Apply style here
+                ),
 
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Enter Password";
-                    } else if (passwordController.text.length < 10) {
-                      return "Password length must be at least 10 characters";
-                    }
-                    return null;
+                const SizedBox(
+                  height: 12,
+                ),
+                FlutterPwValidator(
+                  defaultColor: Colors.grey.shade600,
+                  controller: passwordController,
+                  successColor: Colors.green.shade700,
+                  minLength: 8,
+                  uppercaseCharCount: 1,
+                  numericCharCount: 3,
+                  specialCharCount: 1,
+                  normalCharCount: 3,
+                  width: 300,
+                  height: 150,
+                  onSuccess: () {
+                    setState(() {
+                      isChecked = true;
+                    });
+                  },
+                  onFail: () {
+                    setState(() {
+                      isChecked = false;
+                    });
                   },
                 ),
+
                 SizedBox(height: 25),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
@@ -392,6 +451,13 @@ class _SignUpPage extends State<SignUpPage> {
                   obscureText:
                       confpassToggle, // Use confpassToggle for confirm password
                   decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF32508E),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     labelText: "Confirm Password",
                     border: OutlineInputBorder(),
                     prefixIcon:
@@ -424,10 +490,10 @@ class _SignUpPage extends State<SignUpPage> {
                 Row(
                   children: [
                     Checkbox(
-                      value: isChecked,
+                      value: ischeck,
                       onChanged: (bool? newValue) {
                         setState(() {
-                          isChecked = newValue!;
+                          ischeck = newValue!;
                         });
                       },
                     ),
@@ -475,7 +541,7 @@ class _SignUpPage extends State<SignUpPage> {
                 InkWell(
                     onTap: () {
                       // Check if the checkbox is checked and form validation passes
-                      if (isChecked &&
+                      if (ischeck &&
                           (_formKey.currentState?.validate() ?? false)) {
                         // Proceed with signup logic
                         setState(() {

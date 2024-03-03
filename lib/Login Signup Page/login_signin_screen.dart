@@ -1,9 +1,10 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:suraksha_saathi/Dashboard/home.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/signup.dart';
-import 'package:suraksha_saathi/attachfile.dart';
+import 'package:suraksha_saathi/Skip%20Page/skip_home.dart';
 
 class LoginSigninScreen extends StatelessWidget {
   const LoginSigninScreen({Key? key})
@@ -97,11 +98,35 @@ class LoginSigninScreen extends StatelessWidget {
                 // Navigate to the Login screen
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const AttachFiles()),
+                  MaterialPageRoute(
+                      builder: (context) => const SkipHomeScreen()),
                 );
               },
               child: const Text(
                 "Skip",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 40.0),
+
+            // Skip Button
+            TextButton(
+              onPressed: () {
+                // Handle Skip button press
+                print('Skip button pressed');
+                // Navigate to the Login screen
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
+              },
+              child: const Text(
+                "Main home",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

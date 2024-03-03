@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
+import 'package:suraksha_saathi/Dashboard/home.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AttachFiles extends StatefulWidget {
@@ -30,8 +30,7 @@ class _AttachFilesState extends State<AttachFiles> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => const LoginSigninScreen()),
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
             );
           },
         ),

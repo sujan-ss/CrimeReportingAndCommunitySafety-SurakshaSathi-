@@ -7,6 +7,7 @@ import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/config.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
+
 import 'package:suraksha_saathi/Login%20Signup%20Page/signup_email_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -68,6 +69,7 @@ class _SignUpPage extends State<SignUpPage> {
           );
           return;
         }
+
         var reqBody = {
           "firstname": fNameController.text,
           "lastname": lNameController.text,
@@ -90,7 +92,18 @@ class _SignUpPage extends State<SignUpPage> {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => SignUpEmailScreen()));
         } else {
-          print("Something went wrong!");
+          // Check if the error message indicates that the email is already in use
+          if (jsonResponse.containsKey('error') &&
+              jsonResponse['error'] == "Email already exists") {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('The email address is already in use.'),
+              ),
+            );
+          } else {
+            // Display a generic error message
+            print("Something went wrong!");
+          }
         }
       } else {
         setState(() {
@@ -257,6 +270,7 @@ class _SignUpPage extends State<SignUpPage> {
                     return null;
                   },
                 ),
+
                 // SizedBox(height: 25),
                 // Text(
                 //   'Upload Photo',

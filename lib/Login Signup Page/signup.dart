@@ -97,7 +97,18 @@ class _SignUpPage extends State<SignUpPage> {
               jsonResponse['error'] == "Email already exists") {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('The email address is already in use.'),
+                content: Text(
+                  'The email address is already in use. \n Please use a different email address.',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                backgroundColor: Color.fromARGB(255, 225, 2, 2),
+                elevation: 10,
+                behavior: SnackBarBehavior.floating,
+                margin:
+                    EdgeInsets.only(top: 20, left: 5, right: 5, bottom: 750),
               ),
             );
           } else {
@@ -115,7 +126,17 @@ class _SignUpPage extends State<SignUpPage> {
       print('Exception occurred: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('An error occurred. Please try again later.'),
+          content: Text(
+            'An error occurred. Please try again later.',
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          backgroundColor: Color.fromARGB(255, 225, 2, 2),
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(top: 20, left: 5, right: 5, bottom: 750),
         ),
       );
     }
@@ -567,7 +588,17 @@ class _SignUpPage extends State<SignUpPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                                'Please agree to the terms and conditions.'),
+                              'Please agree to the terms and conditions.',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            backgroundColor: Color.fromARGB(255, 225, 2, 2),
+                            elevation: 10,
+                            behavior: SnackBarBehavior.floating,
+                            margin: EdgeInsets.only(
+                                top: 20, left: 5, right: 5, bottom: 750),
                           ),
                         );
                       }

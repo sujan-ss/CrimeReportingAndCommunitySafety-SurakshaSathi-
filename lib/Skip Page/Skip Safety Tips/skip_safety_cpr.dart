@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
-import 'package:suraksha_saathi/Skip%20Page/SafetyTips/skip_safety.dart';
+import 'package:suraksha_saathi/Skip%20Page/Skip%20Safety%20Tips/skip_safety.dart';
 
 class SkipSafetyCPR extends StatelessWidget {
   const SkipSafetyCPR({Key? key}) : super(key: key);

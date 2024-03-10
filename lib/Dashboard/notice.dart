@@ -3,15 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:suraksha_saathi/Dashboard/Home/home.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key); // Fix constructor syntax
+class Notice extends StatelessWidget {
+  const Notice({Key? key}) : super(key: key); // Fix constructor syntax
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // Wrap the Center widget with a Scaffold
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Notice'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_outlined,
               size: 29.0, color: Color(0xFF32508E)),

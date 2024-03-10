@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:suraksha_saathi/Dashboard/home.dart';
+import 'package:suraksha_saathi/Dashboard/Home/home.dart';
 
 class ReportIncidentLocation extends StatelessWidget {
   const ReportIncidentLocation({Key? key}) : super(key: key);

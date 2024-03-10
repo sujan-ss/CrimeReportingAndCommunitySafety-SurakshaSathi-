@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
-import 'package:suraksha_saathi/Skip%20Page/SafetyTips/skip_safety.dart';
+import 'package:suraksha_saathi/Skip%20Page/Skip%20Safety%20Tips/skip_safety.dart';
 import 'package:suraksha_saathi/Skip%20Page/skip_emergency_contacts.dart';
 import 'package:suraksha_saathi/Skip%20Page/skip_police_station.dart';
 

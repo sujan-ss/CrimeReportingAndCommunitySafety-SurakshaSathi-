@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:suraksha_saathi/Dashboard/home.dart';
+import 'package:suraksha_saathi/Dashboard/Home/home.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/signup.dart';
 import 'package:suraksha_saathi/Skip%20Page/skip_home.dart';

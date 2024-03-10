@@ -1,11 +1,15 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:suraksha_saathi/Dashboard/Home/Safety%20Tips/safety.dart';
+import 'package:suraksha_saathi/Dashboard/Home/emergency_contacts.dart';
+import 'package:suraksha_saathi/Dashboard/Home/police_station.dart';
 import 'package:suraksha_saathi/Dashboard/Profile.dart';
+import 'package:suraksha_saathi/Dashboard/notice.dart';
 
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
-import 'package:suraksha_saathi/attachfile.dart';
-import 'package:suraksha_saathi/report_incident_location.dart';
+import 'package:suraksha_saathi/Dashboard/attachfile.dart';
+import 'package:suraksha_saathi/Report%20Incident/report_incident_location.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -32,18 +36,18 @@ class _HomeScreenState extends State<HomeScreen> {
         );
         break;
       case 1:
-        // Navigate to Profile page
+        // Navigate to Notice page
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const ProfileTab()),
+          MaterialPageRoute(builder: (context) => const Notice()),
         );
         break;
       case 2:
-        // Navigate to Settings page
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => SettingsScreen()),
-        // );
+        // Navigate to Notice page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Profile()),
+        );
         break;
       default:
         break;
@@ -101,22 +105,44 @@ class _HomeScreenState extends State<HomeScreen> {
               CustomButton(
                 icon: Icons.local_hospital_rounded,
                 buttonText: 'Emergency Contacts',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const EmergencyContacts()),
+                  );
+                },
               ),
               CustomButton(
                 icon: Icons.home_rounded,
                 buttonText: 'Police Station',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PoliceStation()),
+                  );
+                },
               ),
               CustomButton(
                 icon: Icons.shield_rounded,
                 buttonText: 'Safety Tips/Measures',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Safety()),
+                  );
+                },
               ),
               CustomButton(
                 icon: Icons.notifications_rounded,
                 buttonText: 'Notice',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Notice()),
+                  );
+                },
               ),
             ],
           ),
@@ -129,12 +155,12 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.notifications),
+            label: 'Notice',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,

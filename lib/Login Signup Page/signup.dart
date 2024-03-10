@@ -7,7 +7,7 @@ import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/config.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
-
+//import 'package:image_picker/image_picker.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/signup_email_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,6 +33,7 @@ class _SignUpPage extends State<SignUpPage> {
   bool isChecked = false;
   bool _autoValidate = false;
   bool ischeck = false;
+  String imageFilePath = '';
   // File? _photoImage;
   // File? _passportImage;
   // String buttonText1 = 'Photo';
@@ -418,6 +419,22 @@ class _SignUpPage extends State<SignUpPage> {
                 //           ),
                 //         ),
                 // ),
+
+                // buildAttachmentButton(
+                //   title:
+                //       imageFilePath.isEmpty ? 'Attach Image' : 'Image Uploaded',
+                //   icon: Icons.image,
+                //   filePath: imageFilePath,
+                //   onPressed: () async {
+                //     final pickedFile = await ImagePicker()
+                //         .pickImage(source: ImageSource.gallery);
+                //     if (pickedFile != null) {
+                //       setState(() {
+                //         imageFilePath = pickedFile.path;
+                //       });
+                //     }
+                //   },
+                // ),
                 SizedBox(height: 25),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
@@ -703,3 +720,57 @@ class _SignUpPage extends State<SignUpPage> {
     );
   }
 }
+
+// Widget buildAttachmentButton({
+//   required String title,
+//   required IconData icon,
+//   required String filePath,
+//   required VoidCallback onPressed,
+// }) {
+//   return Material(
+//     color: Color.fromARGB(255, 255, 255, 255),
+//     borderRadius: BorderRadius.circular(2),
+//     child: InkWell(
+//       onTap: onPressed,
+//       borderRadius: BorderRadius.circular(2),
+//       child: Container(
+//         padding: const EdgeInsets.all(2),
+//         decoration: BoxDecoration(
+//           border: Border.all(
+//             color: Color.fromARGB(255, 0, 0, 0),
+//             width: 1,
+//           ),
+//           borderRadius: BorderRadius.circular(10),
+//         ),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Icon(
+//               icon,
+//               size: 40,
+//               color: const Color.fromARGB(255, 0, 0, 0),
+//             ),
+//             const SizedBox(height: 10),
+//             Text(
+//               title,
+//               style: const TextStyle(
+//                 color: Color.fromARGB(255, 0, 0, 0),
+//                 fontSize: 15,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//             if (filePath
+//                 .isNotEmpty) // Display audio file name if filePath is not empty
+//               Text(
+//                 filePath.split('/').last, // Display only the file name
+//                 style: const TextStyle(
+//                   color: Color.fromARGB(255, 0, 0, 0),
+//                   fontSize: 12,
+//                 ),
+//               ),
+//           ],
+//         ),
+//       ),
+//     ),
+//   );
+// }

@@ -1,8 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:suraksha_saathi/Dashboard/home.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AttachFiles extends StatefulWidget {
   const AttachFiles({Key? key}) : super(key: key);
@@ -50,7 +52,9 @@ class _AttachFilesState extends State<AttachFiles> {
                 shrinkWrap: true,
                 children: [
                   buildAttachmentButton(
-                    title: 'Image',
+                    title: imageFilePath.isEmpty
+                        ? 'Attach Image'
+                        : 'Image Uploaded',
                     icon: Icons.image,
                     filePath: imageFilePath,
                     onPressed: () async {
@@ -64,19 +68,49 @@ class _AttachFilesState extends State<AttachFiles> {
                     },
                   ),
                   buildAttachmentButton(
-                    title: 'Audio',
+                    title: audioFilePath.isEmpty
+                        ? 'Attach Audio'
+                        : 'Audio Uploaded',
                     icon: Icons.audiotrack,
                     filePath: audioFilePath,
-                    onPressed: () {
-                      // Handle audio attachment
+                    onPressed: () async {
+                      FilePickerResult? result =
+                          await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['mp3'],
+                      );
+
+                      if (result != null) {
+                        File file = File(result.files.single
+                            .path!); // Use the null assertion operator here
+                        setState(() {
+                          audioFilePath = file.path;
+                        });
+                      } else {
+                        // User canceled the picker
+                      }
                     },
                   ),
                   buildAttachmentButton(
-                    title: 'Video',
-                    icon: Icons.videocam,
+                    title: videoFilePath.isEmpty
+                        ? 'Attach Video'
+                        : 'Video Uploaded',
+                    icon: Icons.video_library,
                     filePath: videoFilePath,
-                    onPressed: () {
-                      // Handle video attachment
+                    onPressed: () async {
+                      FilePickerResult? result =
+                          await FilePicker.platform.pickFiles(
+                        type: FileType.video,
+                      );
+
+                      if (result != null) {
+                        PlatformFile file = result.files.first;
+                        setState(() {
+                          videoFilePath = file.path!;
+                        });
+                      } else {
+                        // User canceled the picker
+                      }
                     },
                   ),
                 ],
@@ -167,7 +201,6 @@ class _AttachFilesState extends State<AttachFiles> {
     required String filePath,
     required VoidCallback onPressed,
   }) {
-    String buttonText = 'Attach $title';
     return Material(
       color: const Color(0xFF32508E),
       borderRadius: BorderRadius.circular(10),
@@ -193,13 +226,22 @@ class _AttachFilesState extends State<AttachFiles> {
               ),
               const SizedBox(height: 10),
               Text(
-                buttonText,
+                title,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              if (filePath
+                  .isNotEmpty) // Display audio file name if filePath is not empty
+                Text(
+                  filePath.split('/').last, // Display only the file name
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
             ],
           ),
         ),

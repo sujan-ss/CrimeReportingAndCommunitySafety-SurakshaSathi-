@@ -50,10 +50,29 @@ class _loginState extends State<loginPage> {
       if (jsonResponse['status']) {
         var myToken = jsonResponse['token'];
         prefs.setString('token', myToken);
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => test(token: myToken)));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Test(token: myToken)),
+        );
       } else {
-        print("Something went wrong");
+        // Password incorrect
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Login Failed"),
+              content: Text("Incorrect email or password."),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
       }
     }
   }
@@ -154,8 +173,8 @@ class _loginState extends State<loginPage> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Enter Password";
-                    } else if (passController.text.length < 10) {
-                      return "Password length must be at least 10 characters";
+                    } else if (passController.text.length < 8) {
+                      return "Password length must be at least 8 characters";
                     }
                     return null;
                   },

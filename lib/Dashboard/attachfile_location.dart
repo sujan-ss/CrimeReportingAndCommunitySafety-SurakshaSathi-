@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:suraksha_saathi/Dashboard/Home/home.dart';
-import 'package:suraksha_saathi/Report%20Incident/report_incident.dart';
+import 'package:suraksha_saathi/Dashboard/attachfile.dart';
 
-class ReportIncidentLocation extends StatelessWidget {
-  const ReportIncidentLocation({Key? key}) : super(key: key);
+class AttachfileLocation extends StatelessWidget {
+  const AttachfileLocation({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,14 +38,19 @@ class ReportIncidentLocation extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => ReportIncident()),
+                    MaterialPageRoute(builder: (context) => AttachFiles()),
                   );
                 },
               ),
               CustomButton(
                 icon: Icons.home_rounded,
                 buttonText: 'Dillibazar',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => AttachFiles()),
+                  );
+                },
               ),
             ],
           ),

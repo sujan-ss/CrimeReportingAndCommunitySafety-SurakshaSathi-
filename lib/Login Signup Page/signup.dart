@@ -105,11 +105,11 @@ class _SignUpPage extends State<SignUpPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                backgroundColor: Color.fromARGB(255, 225, 2, 2),
-                elevation: 10,
-                behavior: SnackBarBehavior.floating,
-                margin:
-                    EdgeInsets.only(top: 20, left: 5, right: 5, bottom: 750),
+                // backgroundColor: Color.fromARGB(255, 225, 2, 2),
+                // elevation: 10,
+                // behavior: SnackBarBehavior.floating,
+                // margin:
+                //     EdgeInsets.only(top: 20, left: 5, right: 5, bottom: 750),
               ),
             );
           } else {
@@ -134,10 +134,10 @@ class _SignUpPage extends State<SignUpPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          backgroundColor: Color.fromARGB(255, 225, 2, 2),
-          elevation: 10,
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.only(top: 20, left: 5, right: 5, bottom: 750),
+          // backgroundColor: Color.fromARGB(255, 225, 2, 2),
+          // elevation: 10,
+          // behavior: SnackBarBehavior.floating,
+          // margin: EdgeInsets.only(top: 20, left: 5, right: 5, bottom: 750),
         ),
       );
     }
@@ -292,6 +292,8 @@ class _SignUpPage extends State<SignUpPage> {
                     return null;
                   },
                 ),
+
+                
 
                 // SizedBox(height: 25),
                 // Text(
@@ -611,11 +613,11 @@ class _SignUpPage extends State<SignUpPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            backgroundColor: Color.fromARGB(255, 225, 2, 2),
-                            elevation: 10,
-                            behavior: SnackBarBehavior.floating,
-                            margin: EdgeInsets.only(
-                                top: 20, left: 5, right: 5, bottom: 750),
+                            // backgroundColor: Color.fromARGB(255, 225, 2, 2),
+                            // elevation: 10,
+                            // behavior: SnackBarBehavior.floating,
+                            // margin: EdgeInsets.only(
+                            //     top: 20, left: 5, right: 5, bottom: 750),
                           ),
                         );
                       }

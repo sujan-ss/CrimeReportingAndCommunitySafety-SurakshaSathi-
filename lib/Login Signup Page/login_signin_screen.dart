@@ -5,6 +5,7 @@ import 'package:suraksha_saathi/Dashboard/Home/home.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/login.dart';
 import 'package:suraksha_saathi/Login%20Signup%20Page/signup.dart';
 import 'package:suraksha_saathi/Skip%20Page/skip_home.dart';
+import 'package:suraksha_saathi/demodash.dart';
 
 class LoginSigninScreen extends StatelessWidget {
   const LoginSigninScreen({Key? key})
@@ -117,8 +118,6 @@ class LoginSigninScreen extends StatelessWidget {
             // Skip Button
             TextButton(
               onPressed: () {
-                // Handle Skip button press
-                print('Skip button pressed');
                 // Navigate to the Login screen
                 Navigator.pushReplacement(
                   context,
@@ -127,6 +126,26 @@ class LoginSigninScreen extends StatelessWidget {
               },
               child: const Text(
                 "Main home",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+            const SizedBox(height: 40.0),
+
+            // Skip Button
+            TextButton(
+              onPressed: () {
+                // Navigate to the Login screen
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyHomePage()),
+                );
+              },
+              child: const Text(
+                "Dashboard",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

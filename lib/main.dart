@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suraksha_saathi/Dashboard/test.dart';
+
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
 
 void main() async {
@@ -46,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
         MaterialPageRoute(builder: (context) {
           if (widget.token != null &&
               JwtDecoder.isExpired(widget.token) == false) {
-            return test(token: widget.token);
+            return Test(token: widget.token);
           } else {
             return const LoginSigninScreen();
           }

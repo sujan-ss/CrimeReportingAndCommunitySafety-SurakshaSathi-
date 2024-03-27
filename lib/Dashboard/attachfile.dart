@@ -2,9 +2,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:suraksha_saathi/Dashboard/Home/home.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:suraksha_saathi/Dashboard/attachfile_location.dart';
 
 class AttachFiles extends StatefulWidget {
   const AttachFiles({Key? key}) : super(key: key);
@@ -19,9 +19,10 @@ class _AttachFilesState extends State<AttachFiles> {
   String videoFilePath = '';
   String description = ''; // Variable to hold the description
 
-  // List of locations
-  List<String> locations = ['Tripureshwor', 'Dillibazar'];
-  String? selectedLocation; // No initial selection
+  final TextEditingController _imageController = TextEditingController();
+  final TextEditingController _audioController = TextEditingController();
+  final TextEditingController _videoController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,8 @@ class _AttachFilesState extends State<AttachFiles> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const AttachfileLocation()),
             );
           },
         ),
@@ -57,12 +59,14 @@ class _AttachFilesState extends State<AttachFiles> {
                         : 'Image Uploaded',
                     icon: Icons.image,
                     filePath: imageFilePath,
+                    controller: _imageController,
                     onPressed: () async {
                       final pickedFile = await ImagePicker()
                           .pickImage(source: ImageSource.gallery);
                       if (pickedFile != null) {
                         setState(() {
                           imageFilePath = pickedFile.path;
+                          _imageController.text = pickedFile.path;
                         });
                       }
                     },
@@ -73,6 +77,7 @@ class _AttachFilesState extends State<AttachFiles> {
                         : 'Audio Uploaded',
                     icon: Icons.audiotrack,
                     filePath: audioFilePath,
+                    controller: _audioController,
                     onPressed: () async {
                       FilePickerResult? result =
                           await FilePicker.platform.pickFiles(
@@ -85,6 +90,7 @@ class _AttachFilesState extends State<AttachFiles> {
                             .path!); // Use the null assertion operator here
                         setState(() {
                           audioFilePath = file.path;
+                          _audioController.text = file.path;
                         });
                       } else {
                         // User canceled the picker
@@ -97,6 +103,7 @@ class _AttachFilesState extends State<AttachFiles> {
                         : 'Video Uploaded',
                     icon: Icons.video_library,
                     filePath: videoFilePath,
+                    controller: _videoController,
                     onPressed: () async {
                       FilePickerResult? result =
                           await FilePicker.platform.pickFiles(
@@ -107,6 +114,7 @@ class _AttachFilesState extends State<AttachFiles> {
                         PlatformFile file = result.files.first;
                         setState(() {
                           videoFilePath = file.path!;
+                          _videoController.text = file.path!;
                         });
                       } else {
                         // User canceled the picker
@@ -114,40 +122,6 @@ class _AttachFilesState extends State<AttachFiles> {
                     },
                   ),
                 ],
-              ),
-              const SizedBox(height: 20),
-              // Heading for location selection
-              const Text(
-                'Select Location',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              // Dropdown for selecting location
-              DropdownButtonFormField<String>(
-                value: selectedLocation,
-                items: [
-                  const DropdownMenuItem<String>(
-                    value: null,
-                    child: Text('Select a location'),
-                  ),
-                  ...locations.map((location) {
-                    return DropdownMenuItem<String>(
-                      value: location,
-                      child: Text(location),
-                    );
-                  }),
-                ],
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedLocation = newValue;
-                  });
-                },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
               ),
               const SizedBox(height: 20),
               const Text(
@@ -160,6 +134,7 @@ class _AttachFilesState extends State<AttachFiles> {
               const SizedBox(height: 15),
               // Description input field
               TextField(
+                controller: _descriptionController,
                 onChanged: (value) {
                   setState(() {
                     description = value;
@@ -181,7 +156,7 @@ class _AttachFilesState extends State<AttachFiles> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  backgroundColor: const Color(0xFF32508E),
+                  backgroundColor: const Color(0xFFC91C1C),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                       horizontal: 30.0, vertical: 15.0),
@@ -199,6 +174,7 @@ class _AttachFilesState extends State<AttachFiles> {
     required String title,
     required IconData icon,
     required String filePath,
+    required TextEditingController controller,
     required VoidCallback onPressed,
   }) {
     return Material(

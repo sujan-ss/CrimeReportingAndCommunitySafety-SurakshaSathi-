@@ -5,10 +5,10 @@ import 'package:suraksha_saathi/Dashboard/Home/Safety%20Tips/safety.dart';
 import 'package:suraksha_saathi/Dashboard/Home/emergency_contacts.dart';
 import 'package:suraksha_saathi/Dashboard/Home/police_station.dart';
 import 'package:suraksha_saathi/Dashboard/Profile.dart';
+import 'package:suraksha_saathi/Dashboard/attachfile_location.dart';
 import 'package:suraksha_saathi/Dashboard/notice.dart';
 
 import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
-import 'package:suraksha_saathi/Dashboard/attachfile.dart';
 import 'package:suraksha_saathi/Report%20Incident/report_incident_location.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const AttachFiles()),
+                        builder: (context) => const AttachfileLocation()),
                   );
                 },
               ),

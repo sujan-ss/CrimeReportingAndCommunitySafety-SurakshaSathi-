@@ -152,7 +152,7 @@ class _SkipEmergencyContactsState extends State<SkipEmergencyContacts> {
                           final MarkerId markerId = MarkerId('1');
                           final Marker marker = _markers[markerId]!;
                           final LatLng position = marker.position;
-                          final double zoomLevel = 20;
+                          final double zoomLevel = 17;
 
                           await controller.animateCamera(
                             CameraUpdate.newLatLngZoom(position, zoomLevel),

@@ -16,6 +16,7 @@ class ReportIncidentState extends State<ReportIncident> {
   final Set<Marker> _markers = {};
   final TextEditingController _incidentController = TextEditingController();
   String description = '';
+  LatLng? selectedLocation;
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -33,12 +34,13 @@ class ReportIncidentState extends State<ReportIncident> {
         ),
         icon: BitmapDescriptor.defaultMarker,
       ));
+      selectedLocation = position;
     });
   }
 
   void _submitIncident() {
     // Submit your incident here
-    print('Incident submitted at location: ${_markers.first.position}');
+    print('Incident submitted at location: $selectedLocation');
     print('Incident Description: ${_incidentController.text}');
   }
 
@@ -63,14 +65,37 @@ class ReportIncidentState extends State<ReportIncident> {
           SizedBox(
             height: MediaQuery.of(context).size.height *
                 0.6, // Adjust the height as needed
-            child: GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: const CameraPosition(
-                target: LatLng(45.521563, -122.677433),
-                zoom: 11.0,
-              ),
-              markers: _markers,
-              onTap: _addMarker,
+            child: Stack(
+              children: [
+                GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: const CameraPosition(
+                    target: LatLng(27.7172, 85.3240),
+                    zoom: 11.0,
+                  ),
+                  markers: _markers,
+                  onTap: _addMarker,
+                ),
+                if (selectedLocation != null)
+                  Positioned(
+                    top: 16,
+                    left: 16,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        'Lat: ${selectedLocation!.latitude}, Lng: ${selectedLocation!.longitude}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
           const SizedBox(height: 20),

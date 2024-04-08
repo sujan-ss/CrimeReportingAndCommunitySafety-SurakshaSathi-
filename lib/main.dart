@@ -4,9 +4,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:suraksha_saathi/Dashboard/test.dart';
+import 'package:suraksha_saathi/features/Dashboard/test.dart';
 
-import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
+import 'package:suraksha_saathi/features/Authentication/presentation/Screen/login_signin_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -2,8 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:suraksha_saathi/Login%20Signup%20Page/login_signin_screen.dart';
-import 'package:suraksha_saathi/Report%20Incident/report_incident_location.dart';
+import 'package:suraksha_saathi/features/Authentication/presentation/Screen/login_signin_screen.dart';
+import 'package:suraksha_saathi/features/Report%20Incident/report_incident_location.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key});

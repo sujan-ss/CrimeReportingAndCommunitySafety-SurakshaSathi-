@@ -296,8 +296,7 @@ class _SignUpPage extends State<SignUpPage> {
                             // Handle country change if needed
                           },
                           validator: (phone) {
-                            if (phone == null ||
-                                !phone.completeNumber.isNotEmpty) {
+                            if (phone == null || phone.number.isEmpty) {
                               return 'Please enter a valid phone number';
                             } else if (phoneController.text
                                 .contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
@@ -480,11 +479,11 @@ class _SignUpPage extends State<SignUpPage> {
                         ),
                         SizedBox(height: 25),
                         InkWell(
-                            onTap: () {
-                              // Check if the checkbox is checked and form validation passes
-                              if (ischeck &&
-                                  (_formKey.currentState?.validate() ??
-                                      false)) {
+                          onTap: () {
+                            // Check form validation
+                            if ((_formKey.currentState?.validate() ?? false)) {
+                              // Check if the checkbox is checked
+                              if (ischeck) {
                                 // Proceed with signup logic
                                 BlocProvider.of<SignupBloc>(context).add(
                                   FormSubmitEvent(
@@ -498,9 +497,7 @@ class _SignUpPage extends State<SignUpPage> {
                                   ),
                                 );
                               } else {
-                                // Handle the case when the checkbox is not checked or form validation fails
-                                print(
-                                    'Please agree to the terms and conditions');
+                                // Show error message for terms acceptance
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
@@ -510,35 +507,37 @@ class _SignUpPage extends State<SignUpPage> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    // backgroundColor: Color.fromARGB(255, 225, 2, 2),
-                                    // elevation: 10,
-                                    // behavior: SnackBarBehavior.floating,
-                                    // margin: EdgeInsets.only(
-                                    //     top: 20, left: 5, right: 5, bottom: 750),
                                   ),
                                 );
                               }
-                            },
-                            child: Container(
-                              height: 55,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15.0),
-                              decoration: BoxDecoration(
-                                color: Color(0xFF32508E),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                    color: const Color.fromARGB(
-                                        255, 255, 255, 255),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            } else {
+                              // Show validation errors
+                              setState(() {
+                                _autoValidate = true;
+                              });
+                            }
+                          },
+                          child: Container(
+                            height: 55,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 15.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF32508E),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                  color:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            )),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   );

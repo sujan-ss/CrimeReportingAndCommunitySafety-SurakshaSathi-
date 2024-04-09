@@ -1,37 +1,31 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:suraksha_saathi/features/Dashboard/test.dart';
-
+//import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suraksha_saathi/features/Authentication/presentation/Screen/login_signin_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  runApp(MyApp(token: prefs.getString('token')));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final token;
-  const MyApp({@required this.token, super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(token: token),
+      home: SplashScreen(),
     );
   }
 }
 
 class SplashScreen extends StatefulWidget {
-  final token;
-  const SplashScreen({Key? key, this.token}) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -45,12 +39,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) {
-          if (widget.token != null &&
-              JwtDecoder.isExpired(widget.token) == false) {
-            return Test(token: widget.token);
-          } else {
-            return const LoginSigninScreen();
-          }
+          // You don't need to check for the token here anymore
+          return const LoginSigninScreen();
         }),
       );
     });

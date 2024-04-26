@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suraksha_saathi/features/Authentication/presentation/Screen/login_screen.dart/bloc/login_bloc.dart';
+import 'package:suraksha_saathi/features/Authentication/presentation/Screen/login_screen.dart/widgets/unverified.dart';
 import 'package:suraksha_saathi/features/Authentication/presentation/Screen/login_signin_screen.dart';
+import 'package:suraksha_saathi/features/Dashboard/Home/home.dart';
 
 class loginPage extends StatefulWidget {
   const loginPage({Key? key}) : super(key: key);
@@ -78,7 +79,14 @@ class _loginState extends State<loginPage> {
                       },
                     );
                   } else if (state is LoginSuccess) {
-                    print("hurrey login vayo");
+                    if (state.verified) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
+                    } else {
+                      UnverifedScreen.showBottomSheet(context);
+                    }
                   }
                 }
               },

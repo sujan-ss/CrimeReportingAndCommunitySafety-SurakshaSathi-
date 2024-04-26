@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:suraksha_saathi/features/Authentication/data/reposotery/auth_repository.dart';
-import 'package:suraksha_saathi/reposotory/access_tooken_reposotory.dart';
+import 'package:suraksha_saathi/data/reposotory/access_tooken_reposotory.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -21,9 +21,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(LoginLoading());
     final response = await AuthRepository()
         .login(email: event.email, password: event.password);
+
     response.fold((l) {
-      AccessTokenRepo.saveAccessToken(l);
-      emit(LoginSuccess());
+      AccessTokenRepo().saveAccessToken(l.accessToken);
+      emit(LoginSuccess(verified: l.verified));
     }, (r) {
       emit(LoginFailure(message: r));
     });

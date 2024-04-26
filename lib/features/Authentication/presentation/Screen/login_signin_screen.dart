@@ -111,27 +111,6 @@ class LoginSigninScreen extends StatelessWidget {
                 ),
               ),
             ),
-
-            const SizedBox(height: 40.0),
-
-            // Skip Button
-            TextButton(
-              onPressed: () {
-                // Navigate to the Login screen
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              },
-              child: const Text(
-                "Main home",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ),
           ],
         ),
       ),

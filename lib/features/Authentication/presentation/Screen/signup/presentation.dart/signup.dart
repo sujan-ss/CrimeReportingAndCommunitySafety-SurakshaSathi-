@@ -1,6 +1,5 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, prefer_interpolation_to_compose_strings, use_build_context_synchronously
 
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:suraksha_saathi/features/Authentication/presentation/Screen/login_signin_screen.dart';
 import 'package:suraksha_saathi/features/Authentication/presentation/Screen/signup/bloc/signup_bloc.dart';
+import 'package:suraksha_saathi/data/reposotory/files_repo.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -33,60 +33,11 @@ class _SignUpPage extends State<SignUpPage> {
   bool _autoValidate = false;
   bool ischeck = false;
   String imageFilePath = '';
-
-  File? _photoImage;
-
-  Future<void> registerUser() async {
-    try {
-      if (fNameController.text.isNotEmpty &&
-          lNameController.text.isNotEmpty &&
-          emailController.text.isNotEmpty &&
-          passwordController.text.isNotEmpty &&
-          confirmPasswordController.text.isNotEmpty &&
-          phoneController.text.isNotEmpty) {
-        if (passwordController.text != confirmPasswordController.text) {
-          // Passwords don't match, show error message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Passwords do not match.'),
-            ),
-          );
-          return;
-        }
-
-        // Prepare the request body
-        var reqBody = {
-          "firstname": fNameController.text,
-          "lastname": lNameController.text,
-          "email": emailController.text,
-          "password": passwordController.text,
-          "confirmpassword": confirmPasswordController.text,
-          "number": phoneController.text,
-          "image": _photoImage != null
-              ? base64Encode(_photoImage!.readAsBytesSync())
-              : null
-        };
-      } else {
-        setState(() {
-          _autoValidate = true;
-        });
-      }
-    } catch (e) {
-      // Handle exceptions here
-      print('Exception occurred: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'An error occurred. Please try again later.',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      );
-    }
-  }
+  String profilePath = '';
+  String imageUrl = '';
+  String profileUrl = '';
+  bool isProfileLoading = false;
+  bool isImageLoading = false;
 
   @override
   void initState() {
@@ -179,6 +130,49 @@ class _SignUpPage extends State<SignUpPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Center(
+                          child: InkWell(
+                            onTap: () async {
+                              setState(() {
+                                isProfileLoading = true;
+                              });
+                              final pickedFile = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+
+                              if (pickedFile != null) {
+                                profileUrl = await FileRepo.uploadImage(
+                                    pickedFile.path, FileTypo.image);
+                                setState(() {
+                                  profilePath = pickedFile.path;
+                                });
+                              }
+                              setState(() {
+                                isProfileLoading = false;
+                              });
+                            },
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.blue,
+                              child: isProfileLoading
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : profilePath.isEmpty
+                                      ? Icon(
+                                          Icons.camera,
+                                          size: 50,
+                                          color: Color(0xFF32508E),
+                                        )
+                                      : CircleAvatar(
+                                          radius: 50,
+                                          backgroundColor: Colors.blue,
+                                          backgroundImage:
+                                              FileImage(File(profilePath)),
+                                        ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 25), // Add some space
                         Text(
                           'Create Your Account',
                           style: TextStyle(
@@ -307,6 +301,7 @@ class _SignUpPage extends State<SignUpPage> {
                         ),
                         SizedBox(height: 25),
                         buildAttachmentButton(
+                          isLoading: isImageLoading,
                           title: imageFilePath.isEmpty
                               ? 'Attach Image'
                               : 'Image Uploaded',
@@ -314,14 +309,25 @@ class _SignUpPage extends State<SignUpPage> {
                           filePath: imageFilePath,
                           controller: _imageController,
                           onPressed: () async {
+                            setState(() {
+                              isImageLoading = true;
+                            });
                             final pickedFile = await ImagePicker()
                                 .pickImage(source: ImageSource.gallery);
                             if (pickedFile != null) {
+                              imageUrl = await FileRepo.uploadImage(
+                                  pickedFile.path, FileTypo.image);
+                              setState(() {
+                                profilePath = pickedFile.path;
+                              });
                               setState(() {
                                 imageFilePath = pickedFile.path;
                                 _imageController.text = pickedFile.path;
                               });
                             }
+                            setState(() {
+                              isImageLoading = false;
+                            });
                           },
                         ),
                         SizedBox(height: 25),
@@ -480,6 +486,8 @@ class _SignUpPage extends State<SignUpPage> {
                         SizedBox(height: 25),
                         InkWell(
                           onTap: () {
+                            print(profileUrl);
+                            print(imageUrl);
                             // Check form validation
                             if ((_formKey.currentState?.validate() ?? false)) {
                               // Check if the checkbox is checked
@@ -492,8 +500,8 @@ class _SignUpPage extends State<SignUpPage> {
                                     lastName: lNameController.text,
                                     email: emailController.text,
                                     password: passwordController.text,
-                                    imageUrl: _imageController.text,
-                                    passportImageUrl: '',
+                                    imageUrl: profileUrl,
+                                    passportImageUrl: imageUrl,
                                   ),
                                 );
                               } else {
@@ -551,13 +559,13 @@ class _SignUpPage extends State<SignUpPage> {
   }
 }
 
-Widget buildAttachmentButton({
-  required String title,
-  required IconData icon,
-  required String filePath,
-  required TextEditingController controller,
-  required VoidCallback onPressed,
-}) {
+Widget buildAttachmentButton(
+    {required String title,
+    required IconData icon,
+    required String filePath,
+    required TextEditingController controller,
+    required VoidCallback onPressed,
+    required bool isLoading}) {
   return Material(
     color: const Color(0xFF32508E),
     borderRadius: BorderRadius.circular(10),
@@ -573,34 +581,38 @@ Widget buildAttachmentButton({
           ),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 40,
-              color: Colors.white,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
+        child: isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  if (filePath
+                      .isNotEmpty) // Display audio file name if filePath is not empty
+                    Text(
+                      filePath.split('/').last, // Display only the file name
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                    ),
+                ],
               ),
-            ),
-            if (filePath
-                .isNotEmpty) // Display audio file name if filePath is not empty
-              Text(
-                filePath.split('/').last, // Display only the file name
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
-              ),
-          ],
-        ),
       ),
     ),
   );

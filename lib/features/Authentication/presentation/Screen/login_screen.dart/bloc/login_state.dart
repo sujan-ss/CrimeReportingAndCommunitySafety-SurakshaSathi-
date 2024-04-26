@@ -16,6 +16,9 @@ class LoginLoading extends LoginState {
 class LoginSuccess extends LoginState {
   @override
   List<Object?> get props => throw UnimplementedError();
+
+  final bool verified;
+  LoginSuccess({required this.verified});
 }
 
 class LoginFailure extends LoginState {
@@ -35,6 +38,3 @@ class TogglePasswordVisibilityState extends LoginState {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
-
-
-

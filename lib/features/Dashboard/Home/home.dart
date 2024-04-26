@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:suraksha_saathi/features/Dashboard/Home/Safety%20Tips/safety.dart';
 import 'package:suraksha_saathi/features/Dashboard/Home/emergency_contacts.dart';
 import 'package:suraksha_saathi/features/Dashboard/Home/police_station.dart';
-import 'package:suraksha_saathi/features/Dashboard/Profile.dart';
+import 'package:suraksha_saathi/features/profile/presentation/Profile.dart';
 import 'package:suraksha_saathi/features/Dashboard/attachfile_location.dart';
 import 'package:suraksha_saathi/features/Dashboard/notice.dart';
 
@@ -59,17 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_outlined,
-              size: 29.0, color: Color(0xFF32508E)),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const LoginSigninScreen()),
-            );
-          },
-        ),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Padding(

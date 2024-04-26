@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:suraksha_saathi/constants/api_constants.dart';
+import 'package:suraksha_saathi/data/reposotory/access_tooken_reposotory.dart';
 
 enum ApiMethod { get, post, put }
 
@@ -24,29 +25,27 @@ class ApiHandler {
     bool isHeader = false,
     Map<String, dynamic>? queryparameter,
   }) async {
-    // Box box = Hive.box("localData");
-    // String? accessToken = box.get("accessToken");
-
+    final String accessToken = await AccessTokenRepo().getAccessToken() ?? "";
     try {
-      // final headers = {
-      //   'Content-Type': 'application/json;charset=UTF-8',
-      //   'Charset': 'utf-8',
-      //   'authorization': 'Bearer $accessToken'
-      // };
+      final headers = {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Charset': 'utf-8',
+        'authorization': 'Bearer $accessToken'
+      };
       dynamic response;
 
       if (method == ApiMethod.get) {
         response = await dio.get(url,
             queryParameters: queryparameter,
             options: Options(
-              headers: isHeader ? {} : null,
+              headers: isHeader ? headers : null,
             ));
         return response;
       } else if (method == ApiMethod.post) {
         response = await dio.post(url,
             data: body,
             options: Options(
-              headers: {},
+              headers: headers,
             ));
         return response;
       } else if (method == ApiMethod.put) {
